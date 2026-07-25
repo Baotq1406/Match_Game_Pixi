@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
-import { StateMachine } from "../core/StateMachine.js";
-import { GameplayState } from "../states/GameplayState.js";
-import { StartState } from "../states/StartState.js";
 import { GameConfig } from "../config/GameConfig.js";
+import { GameplayState } from "../states/GameplayState.js";
+import { AssetLoader } from "../services/AssetLoader.js";
+import { StateMachine } from "./StateMachine.js";
 
 export class Game {
     constructor(app) {
@@ -23,6 +23,7 @@ export class Game {
 
     async start() {
         this.resize();
+        await AssetLoader.load();
         await this.stateMachine.changeState(GameplayState);
     }
 

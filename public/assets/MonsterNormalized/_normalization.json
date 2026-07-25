@@ -1,0 +1,49 @@
+{
+  "canvasSize": 256,
+  "maximumContentWidth": 240,
+  "maximumContentHeight": 224,
+  "baselineY": 244,
+  "targetAlphaArea": 30000,
+  "sequences": {
+    "Cam": {
+      "prefix": "Cat",
+      "frameCount": 13,
+      "scale": 0.32345,
+      "maximumSourceWidth": 742,
+      "maximumSourceHeight": 560,
+      "medianAlphaArea": 275046
+    },
+    "Hong": {
+      "prefix": "Pig",
+      "frameCount": 13,
+      "scale": 0.328949,
+      "maximumSourceWidth": 662,
+      "maximumSourceHeight": 623,
+      "medianAlphaArea": 277246
+    },
+    "Tim": {
+      "prefix": "Sheep",
+      "frameCount": 13,
+      "scale": 0.292697,
+      "maximumSourceWidth": 763,
+      "maximumSourceHeight": 677,
+      "medianAlphaArea": 350175
+    },
+    "Trang": {
+      "prefix": "Rabbit",
+      "frameCount": 13,
+      "scale": 0.317668,
+      "maximumSourceWidth": 730,
+      "maximumSourceHeight": 642,
+      "medianAlphaArea": 297285
+    },
+    "Xanh_la": {
+      "prefix": "Owl",
+      "frameCount": 13,
+      "scale": 0.290557,
+      "maximumSourceWidth": 826,
+      "maximumSourceHeight": 600,
+      "medianAlphaArea": 336517
+    }
+  }
+}

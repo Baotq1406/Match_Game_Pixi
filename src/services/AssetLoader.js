@@ -1,6 +1,7 @@
 import { Assets } from "pixi.js";
 
 export const AssetId = Object.freeze({
+    BASKET: "basket",
     MONSTER_CAT: "monster-cat",
     MONSTER_PIG: "monster-pig",
     MONSTER_SHEEP: "monster-sheep",
@@ -17,6 +18,10 @@ export const MONSTER_ASSET_IDS = Object.freeze([
 ]);
 
 const GAME_ASSETS = [
+    {
+        alias: AssetId.BASKET,
+        src: "/assets/Basket.png",
+    },
     {
         alias: AssetId.MONSTER_CAT,
         src: "/assets/MonsterNormalized/Cam/Cat_1.png",

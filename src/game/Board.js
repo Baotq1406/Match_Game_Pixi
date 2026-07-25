@@ -5,6 +5,8 @@ import {
     MONSTER_ASSET_IDS,
 } from "../services/AssetLoader.js";
 import { Monster } from "./Monster.js";
+import { MonsterDropAnimator } from "./MonsterDropAnimator.js";
+import { BoardRefillService } from "./BoardRefillService.js";
 
 const NEIGHBOR_DIRECTIONS = [
     [-1, -1],
@@ -28,9 +30,23 @@ export class Board extends Container {
         this.monsters = [];
         this.layoutWidth = this.columns * this.cellSize;
         this.layoutHeight = this.rows * this.cellSize;
+        this.config = config;
+        this.isReady = false;
+        this.isBusy = true;
+        this.animator = new MonsterDropAnimator({
+            cellSize: this.cellSize,
+            config,
+        });
+        this.refillService = new BoardRefillService({
+            board: this,
+            createMonster: (type, row, column) =>
+                this.createMonster(type, row, column),
+            animator: this.animator,
+            config,
+        });
 
         this.createGrid(config);
-        this.createInitialMonsters(config);
+        this.ready = this.createInitialMonsters(config);
     }
 
     createGrid(config) {
@@ -154,20 +170,33 @@ export class Board extends Container {
 
             for (let column = 0; column < this.columns; column++) {
                 const type = typeGrid[row][column];
-                const monster = new Monster({
-                    type,
-                    texture: AssetLoader.get(type),
-                    row,
-                    column,
-                    cellSize: this.cellSize,
-                    sizeRatio: config.monsterSizeRatio,
-                });
+                const monster = this.createMonster(type, row, column);
 
                 this.monsterLayer.addChild(monster);
                 this.monsters[row][column] = monster;
                 this.cells[row][column].monster = monster;
             }
         }
+
+        const animation = this.animator.animateInitial(this.monsters.flat());
+        return animation.then(() => {
+            this.isReady = true;
+            this.isBusy = false;
+        });
+    }
+
+    createMonster(type, row, column) {
+        return new Monster({
+            type,
+            texture: AssetLoader.get(type),
+            row,
+            column,
+            cellSize: this.cellSize,
+            sizeRatio: this.config.monsterSizeRatio,
+        });
+    }
+    resolveChain(chain) {
+        return this.refillService.resolveChain(chain);
     }
 
     createPlayableTypeGrid(types, minimumChainLength) {
@@ -277,5 +306,10 @@ export class Board extends Container {
             x: column * this.cellSize + this.cellSize / 2,
             y: row * this.cellSize + this.cellSize / 2,
         };
+    }
+
+    destroy(options) {
+        this.animator.destroy();
+        super.destroy(options);
     }
 }

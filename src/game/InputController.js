@@ -24,6 +24,10 @@ export class InputController {
     }
 
     onPointerDown(event) {
+        if (this.board.isBusy || !this.board.isReady) {
+            return;
+        }
+
         const monster = this.getMonsterAt(event.global);
 
         if (!monster) {

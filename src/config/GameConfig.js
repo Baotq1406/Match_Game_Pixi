@@ -23,6 +23,9 @@ export const GameConfig = Object.freeze({
         linkCoreAlpha: 0.95,
         linkCoreWidth: 3,
         monsterSizeRatio: 0.82,
+        monsterDropDuration: 280,
+        monsterDropStagger: 20,
+        monsterDropStartOffset: 1,
         minimumInitialChain: 3,
     }),
 });

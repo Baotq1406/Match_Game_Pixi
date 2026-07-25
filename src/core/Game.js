@@ -46,5 +46,7 @@ export class Game {
             (screenWidth - this.designWidth * scale) / 2,
             (screenHeight - this.designHeight * scale) / 2
         );
+
+        this.stateMachine.currentState?.resize?.();
     }
 }

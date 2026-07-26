@@ -16,6 +16,6 @@ export class StateMachine {
     }
 
     update(deltaTime) {
-        this.currentState?.update(deltaTime);
+        this.currentState?.update?.(deltaTime);
     }
 }

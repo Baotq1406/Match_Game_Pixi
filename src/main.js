@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import { Game } from "./core/Game.js";
+import { GameManager } from "./Manager/GameManager.js";
 import "../public/style.css";
 
 async function main() {
@@ -15,8 +15,8 @@ async function main() {
 
     document.body.appendChild(app.canvas);
 
-    const game = new Game(app);
-    await game.start();
+    const gameManager = GameManager.getInstance(app);
+    await gameManager.start();
 }
 
 main().catch((error) => {

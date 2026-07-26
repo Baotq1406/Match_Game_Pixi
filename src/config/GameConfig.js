@@ -2,6 +2,22 @@ export const GameConfig = Object.freeze({
     designWidth: 680,
     designHeight: 680,
     viewportPaddingRatio: 0.025,
+    roundDurationSeconds: 120,
+    targetScore: 500,
+    targetMonsterCount: 20,
+
+    monsterSkills: Object.freeze({
+        cat: Object.freeze({
+            bonusSeconds: 10,
+        }),
+        pig: Object.freeze({
+            bonusScore: 20,
+        }),
+        sheep: Object.freeze({
+            scoreMultiplier: 2,
+            durationSeconds: 20,
+        }),
+    }),
 
     board: Object.freeze({
         rows: 8,

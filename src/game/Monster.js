@@ -1,4 +1,5 @@
 import { Container, Sprite } from "pixi.js";
+import { ScoreMultiplierBadge } from "./ScoreMultiplierBadge.js";
 
 export class Monster extends Container {
     constructor({ type, texture, row, column, cellSize, sizeRatio }) {
@@ -25,8 +26,13 @@ export class Monster extends Container {
         this.sprite.scale.set(scale);
         this.sprite.position.set(cellSize / 2, cellSize / 2);
 
-        this.addChild(this.sprite);
+        this.multiplierBadge = new ScoreMultiplierBadge(cellSize);
+        this.addChild(this.sprite, this.multiplierBadge);
         this.setGridPosition(row, column);
+    }
+
+    setScoreMultiplier(multiplier) {
+        this.multiplierBadge.setMultiplier(multiplier);
     }
 
     setGridPosition(row, column) {

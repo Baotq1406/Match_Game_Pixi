@@ -1,8 +1,10 @@
 import { Board } from "../game/Board.js";
 import { InputController } from "../game/InputController.js";
 import { LinkRenderer } from "../game/LinkRenderer.js";
-import { GameHud } from "../ui/GameHud.js";
+import { UIManager } from "../ui/UIManager.js";
 import { GameConfig } from "../config/GameConfig.js";
+import { ResultState } from "./ResultState.js";
+import { MonsterSkillManager } from "../game/skills/MonsterSkillManager.js";
 
 export class GameplayState {
     constructor(game) {
@@ -11,6 +13,11 @@ export class GameplayState {
         this.inputController = null;
         this.linkRenderer = null;
         this.hud = null;
+        this.skillManager = null;
+        this.score = 0;
+        this.timeRemaining = GameConfig.roundDurationSeconds;
+        this.isRunning = false;
+        this.isGameOver = false;
     }
 
     async enter() {
@@ -22,7 +29,7 @@ export class GameplayState {
         );
 
         this.game.root.addChild(this.board);
-        this.hud = new GameHud();
+        this.hud = UIManager.getInstance({ ticker: this.game.app.ticker });
         this.game.app.stage.addChild(this.hud);
         this.resize();
         await this.board.ready;
@@ -33,11 +40,71 @@ export class GameplayState {
         });
         this.board.addChild(this.linkRenderer);
         this.inputController = new InputController(this.board, this.linkRenderer);
+        this.skillManager = new MonsterSkillManager({
+            addTime: (seconds) => {
+                this.timeRemaining += seconds;
+                this.hud.setTime(Math.ceil(this.timeRemaining));
+            },
+            addScore: (score) => {
+                this.score += score;
+                this.hud.setScore(this.score);
+            },
+            setBoardMultiplier: (monsterType, multiplier) => {
+                this.board.setMonsterScoreMultiplier(
+                    monsterType,
+                    multiplier
+                );
+            },
+            setCountdown: (monsterType, multiplier, seconds) => {
+                this.hud.setSkillCountdown(
+                    monsterType,
+                    multiplier,
+                    seconds
+                );
+            },
+        });
 
         this.board.on("chainCompleted", ({ monsters }) => {
+            if (this.isGameOver) {
+                return;
+            }
+
+            const activatedSkills = this.hud.collect(monsters);
+            this.score +=
+                this.skillManager.calculateCollectionScore(monsters);
+            activatedSkills.forEach((monsterType) => {
+                this.skillManager.activate(monsterType);
+            });
+
+            this.hud.setScore(this.score);
             void this.board.resolveChain(monsters);
         });
 
+        this.hud.setTime(this.timeRemaining);
+        this.hud.setScore(this.score);
+        this.isRunning = true;
+    }
+
+    update(deltaMilliseconds) {
+        if (!this.isRunning || this.isGameOver) {
+            return;
+        }
+
+        this.skillManager?.update(deltaMilliseconds);
+
+        this.timeRemaining = Math.max(
+            0,
+            this.timeRemaining - deltaMilliseconds / 1000
+        );
+        this.hud.setTime(Math.ceil(this.timeRemaining));
+
+        if (this.timeRemaining === 0) {
+            this.isGameOver = true;
+            this.isRunning = false;
+            void this.game.stateMachine.changeState(ResultState, {
+                score: this.score,
+            });
+        }
     }
 
     exit() {
@@ -46,6 +113,9 @@ export class GameplayState {
         }
 
         this.inputController?.destroy();
+        this.isRunning = false;
+        this.skillManager?.destroy();
+        this.skillManager = null;
         this.inputController = null;
         this.linkRenderer = null;
         if (this.hud) {
@@ -104,14 +174,14 @@ export class GameplayState {
             this.board.scale.set(displayedBoardScale);
             this.board.position.set(boardX, boardY);
         } else if (isCompact) {
-            const compactScale = Math.min(
-                0.9,
-                (window.innerWidth - 24) /
-                    (this.hud.infoWidth +
-                        this.hud.targetPanelWidth +
-                        12)
+            this.hud.layout(
+                window.innerWidth,
+                window.innerHeight,
+                this.board.getBounds()
             );
-            const hudHeight = this.hud.infoHeight * compactScale;
+
+            const hudHeight =
+                this.hud.infoPanel.panelHeight * this.hud.scale.x;
             const boardTop = 12 + hudHeight + 12;
             const availableHeight = Math.max(
                 1,

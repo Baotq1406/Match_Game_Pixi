@@ -28,6 +28,7 @@ export class Board extends Container {
         this.cellSize = config.cellSize;
         this.cells = [];
         this.monsters = [];
+        this.monsterScoreMultipliers = new Map();
         this.layoutWidth = this.columns * this.cellSize;
         this.layoutHeight = this.rows * this.cellSize;
         this.config = config;
@@ -186,13 +187,32 @@ export class Board extends Container {
     }
 
     createMonster(type, row, column) {
-        return new Monster({
+        const monster = new Monster({
             type,
             texture: AssetLoader.get(type),
             row,
             column,
             cellSize: this.cellSize,
             sizeRatio: this.config.monsterSizeRatio,
+        });
+
+        monster.setScoreMultiplier(
+            this.monsterScoreMultipliers.get(type) ?? 1
+        );
+        return monster;
+    }
+
+    setMonsterScoreMultiplier(monsterType, multiplier) {
+        if (multiplier > 1) {
+            this.monsterScoreMultipliers.set(monsterType, multiplier);
+        } else {
+            this.monsterScoreMultipliers.delete(monsterType);
+        }
+
+        this.monsters.flat().forEach((monster) => {
+            if (monster?.type === monsterType) {
+                monster.setScoreMultiplier(multiplier);
+            }
         });
     }
     resolveChain(chain) {

@@ -5,13 +5,14 @@ import { AssetLoader } from "../services/AssetLoader.js";
 import { StateMachine } from "../core/StateMachine.js";
 
 /**
- * Coordinates the game lifecycle, shared display root, and active state.
- * Only one instance is allowed to manage the game at a time.
+ * Quan ly vong doi game, root hien thi va state dang hoat dong.
+ * Chi cho phep mot instance ton tai trong cung mot thoi diem.
  */
 export class GameManager {
     static instance = null;
 
     static getInstance(app) {
+        // Lan khoi tao dau tien bat buoc phai co PixiJS Application.
         if (!GameManager.instance && !app) {
             throw new Error("GameManager cần một PixiJS Application khi khởi tạo.");
         }
@@ -39,12 +40,14 @@ export class GameManager {
     }
 
     async start() {
+        // Tai tai nguyen truoc khi chuyen vao man choi chinh.
         this.resize();
         await AssetLoader.load();
         await this.stateMachine.changeState(GameplayState);
     }
 
     resize() {
+        // Giu ti le thiet ke va can game vao giua man hinh.
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
         const shortestSide = Math.min(screenWidth, screenHeight);
@@ -65,6 +68,7 @@ export class GameManager {
     }
 
     destroy() {
+        // Go toan bo listener de singleton co the duoc tao lai an toan.
         window.removeEventListener("resize", this.handleResize);
         this.app.ticker.remove(this.handleTick);
         this.stateMachine.currentState?.exit?.();

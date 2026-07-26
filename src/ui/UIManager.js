@@ -3,11 +3,14 @@ import { layoutHud } from "./HudLayout.js";
 import { GameInfoPanel } from "./components/GameInfoPanel.js";
 import { TargetPanel } from "./components/TargetPanel.js";
 
-/** Coordinates the game's HUD components. */
+/**
+ * Singleton dieu phoi cac thanh phan HUD va bo cuc responsive.
+ */
 export class UIManager extends Container {
     static instance = null;
 
     static getInstance(options) {
+        // Ticker chi can truyen vao khi tao instance dau tien.
         if (!UIManager.instance && !options?.ticker) {
             throw new Error("UIManager needs a PixiJS ticker when it is created.");
         }
@@ -29,6 +32,7 @@ export class UIManager extends Container {
     }
 
     collect(monsters) {
+        // Tra ve danh sach skill vua duoc kich hoat sau lan thu thap.
         return this.targetPanel.collect(monsters);
     }
 
@@ -46,6 +50,14 @@ export class UIManager extends Container {
             multiplier,
             seconds
         );
+    }
+
+    setSkillTimer(monsterType, label, seconds) {
+        this.targetPanel.setSkillTimer(monsterType, label, seconds);
+    }
+
+    showTargetSkillFeedback(monsterType, text) {
+        this.targetPanel.showSkillFeedback(monsterType, text);
     }
 
     layout(screenWidth, screenHeight, boardBounds) {

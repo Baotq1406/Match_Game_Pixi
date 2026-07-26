@@ -19,6 +19,9 @@ const NEIGHBOR_DIRECTIONS = [
     [1, 1],
 ];
 
+/**
+ * Quan ly luoi, quai, o tuong tac va qua trinh refill cua board.
+ */
 export class Board extends Container {
     constructor(config = GameConfig.board) {
         super();
@@ -28,7 +31,9 @@ export class Board extends Container {
         this.cellSize = config.cellSize;
         this.cells = [];
         this.monsters = [];
+        // Hai map nay giu hieu ung cho ca quai moi duoc tao sau refill.
         this.monsterScoreMultipliers = new Map();
+        this.monsterDisplayTypes = new Map();
         this.layoutWidth = this.columns * this.cellSize;
         this.layoutHeight = this.rows * this.cellSize;
         this.config = config;
@@ -51,6 +56,7 @@ export class Board extends Container {
     }
 
     createGrid(config) {
+        // Grid layer nam duoi monster layer de giu thu tu hien thi.
         this.gridLayer = new Container();
         this.addChild(this.gridLayer);
 
@@ -161,6 +167,7 @@ export class Board extends Container {
     }
 
     createInitialMonsters(config) {
+        // Tao board ban dau co it nhat mot chuoi hop le de nguoi choi noi.
         const typeGrid = this.createPlayableTypeGrid(
             MONSTER_ASSET_IDS,
             config.minimumInitialChain
@@ -187,6 +194,7 @@ export class Board extends Container {
     }
 
     createMonster(type, row, column) {
+        // Quai moi phai ke thua multiplier dang hoat dong tren board.
         const monster = new Monster({
             type,
             texture: AssetLoader.get(type),
@@ -199,10 +207,15 @@ export class Board extends Container {
         monster.setScoreMultiplier(
             this.monsterScoreMultipliers.get(type) ?? 1
         );
+        const displayType = this.monsterDisplayTypes.get(type);
+        if (displayType) {
+            monster.setDisplayTexture(AssetLoader.get(displayType));
+        }
         return monster;
     }
 
     setMonsterScoreMultiplier(monsterType, multiplier) {
+        // Map nay cung duoc dung cho cac quai moi sinh ra khi refill.
         if (multiplier > 1) {
             this.monsterScoreMultipliers.set(monsterType, multiplier);
         } else {
@@ -215,11 +228,34 @@ export class Board extends Container {
             }
         });
     }
+
+    getMonstersByType(monsterType) {
+        return this.monsters
+            .flat()
+            .filter((monster) => monster?.type === monsterType);
+    }
+
+    setMonsterDisplayType(monsterType, displayType) {
+        // Chi doi texture; type goc van duoc giu de target va skill dem dung.
+        // Khi displayType tro ve type goc, xoa override cho cac lan refill sau.
+        if (displayType === monsterType) {
+            this.monsterDisplayTypes.delete(monsterType);
+        } else {
+            this.monsterDisplayTypes.set(monsterType, displayType);
+        }
+
+        const texture = AssetLoader.get(displayType);
+        this.getMonstersByType(monsterType).forEach((monster) => {
+            monster.setDisplayTexture(texture);
+        });
+    }
+
     resolveChain(chain) {
         return this.refillService.resolveChain(chain);
     }
 
     createPlayableTypeGrid(types, minimumChainLength) {
+        // Gioi han so lan thu de tranh vong lap vo han.
         const maximumAttempts = 100;
 
         for (let attempt = 0; attempt < maximumAttempts; attempt++) {

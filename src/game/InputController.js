@@ -2,10 +2,17 @@ import { Rectangle } from "pixi.js";
 
 const NEIGHBOR_DISTANCE = 1;
 
+/**
+ * Chuyen pointer input thanh chuoi quai lien ke hop le.
+ */
 export class InputController {
-    constructor(board, linkRenderer) {
+    constructor(board, linkRenderer, { canConnect } = {}) {
         this.board = board;
         this.linkRenderer = linkRenderer;
+        // Neu khong co skill cung cap rule rieng, chi cho noi cung loai.
+        this.canConnect =
+            canConnect ??
+            ((chain, monster) => monster.type === chain[0]?.type);
         this.chain = [];
         this.isDragging = false;
 
@@ -24,6 +31,7 @@ export class InputController {
     }
 
     onPointerDown(event) {
+        // Khong nhan input khi board dang tao hoac refill quai.
         if (this.board.isBusy || !this.board.isReady) {
             return;
         }
@@ -61,6 +69,7 @@ export class InputController {
     }
 
     onPointerUp() {
+        // Chuoi tu ba quai tro len moi duoc tinh la mot lan thu thap.
         if (!this.isDragging) {
             return;
         }
@@ -78,6 +87,7 @@ export class InputController {
     }
 
     tryExtendChain(monster) {
+        // Quy tac loai duoc inject de skill wildcard khong lam controller phinh to.
         const lastMonster = this.chain[this.chain.length - 1];
         const previousMonster = this.chain[this.chain.length - 2];
 
@@ -86,12 +96,13 @@ export class InputController {
         }
 
         if (monster === previousMonster) {
+            // Keo nguoc ve quai truoc de bo quai cuoi khoi chuoi.
             this.chain.pop();
             return;
         }
 
         if (
-            monster.type !== this.chain[0].type ||
+            !this.canConnect(this.chain, monster) ||
             !this.isNeighbor(lastMonster, monster) ||
             this.chain.includes(monster)
         ) {

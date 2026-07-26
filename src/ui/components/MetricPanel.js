@@ -1,6 +1,9 @@
 import { Container, Text } from "pixi.js";
 import { HUD_COLORS, createPanel } from "./HudStyles.js";
 
+/**
+ * Thanh phan dung chung cho mot chi so co nhan va gia tri.
+ */
 export class MetricPanel extends Container {
     constructor({ label, value, valueColor, width }) {
         super();

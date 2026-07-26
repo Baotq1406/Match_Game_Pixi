@@ -2,6 +2,7 @@ import { Application } from "pixi.js";
 import { GameManager } from "./Manager/GameManager.js";
 import "../public/style.css";
 
+// Diem khoi dong cua ung dung PixiJS.
 async function main() {
     const app = new Application();
 

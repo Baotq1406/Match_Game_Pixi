@@ -1,5 +1,8 @@
 import { Container, Graphics, Text } from "pixi.js";
 
+/**
+ * Badge diem nhan cho quai dang duoc huong he so diem.
+ */
 export class ScoreMultiplierBadge extends Container {
     constructor(cellSize) {
         super();

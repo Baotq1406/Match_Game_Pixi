@@ -1,5 +1,8 @@
 import { Ticker } from "pixi.js";
 
+/**
+ * Dieu khien animation roi cua quai bang Pixi shared ticker.
+ */
 export class MonsterDropAnimator {
     constructor({ cellSize, config }) {
         this.cellSize = cellSize;
@@ -34,6 +37,7 @@ export class MonsterDropAnimator {
     }
 
     animate(transitions) {
+        // Moi transition co delay rieng de tao hieu ung roi lan luot.
         if (transitions.length === 0) {
             return Promise.resolve();
         }
@@ -92,6 +96,7 @@ export class MonsterDropAnimator {
     }
 
     destroy() {
+        // Giai phong callback va resolve promise dang cho khi board bi huy.
         this.animations.forEach((animation) => {
             Ticker.shared.remove(animation.callback);
             animation.resolve();

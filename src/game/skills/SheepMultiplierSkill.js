@@ -1,3 +1,6 @@
+/**
+ * Skill SHEEP nhan doi diem Sheep trong mot khoang thoi gian.
+ */
 export class SheepMultiplierSkill {
     constructor({
         monsterType,
@@ -17,6 +20,7 @@ export class SheepMultiplierSkill {
     }
 
     activate() {
+        // Kich hoat lai khi buff dang chay se dua countdown ve moc ban dau.
         this.remainingSeconds = this.durationSeconds;
         this.lastDisplayedSecond = this.durationSeconds;
         this.setCountdown(
@@ -32,6 +36,7 @@ export class SheepMultiplierSkill {
     }
 
     update(deltaMilliseconds) {
+        // Chi cap nhat UI khi so giay hien thi thay doi.
         if (!this.isActive) {
             return;
         }
@@ -63,6 +68,7 @@ export class SheepMultiplierSkill {
     }
 
     deactivate() {
+        // Tat ca badge tren board va an countdown khi het hieu luc.
         if (!this.isActive) {
             return;
         }

@@ -1,5 +1,8 @@
 import { Container, Graphics, Text } from "pixi.js";
 
+/**
+ * Hien thi feedback ngan han hoac countdown skill ben trong target.
+ */
 export class TargetSkillBadge extends Container {
     constructor({ ticker, cardSize }) {
         super();
@@ -30,6 +33,7 @@ export class TargetSkillBadge extends Container {
     }
 
     showTemporary(text, durationMilliseconds = 900) {
+        // Feedback CAT va PIG tu an sau mot khoang ngan.
         this.stopHideAnimation();
         this.show(text);
 
@@ -48,13 +52,14 @@ export class TargetSkillBadge extends Container {
         this.ticker.add(this.hideAnimation);
     }
 
-    setCountdown(multiplier, seconds) {
+    setCountdown(label, seconds) {
+        // Countdown uu tien hon feedback ngan han va duoc giu den khi ve 0.
         this.stopHideAnimation();
         if (seconds <= 0) {
             this.visible = false;
             return;
         }
-        this.show(`×${multiplier} ${seconds}s`);
+        this.show(`${label} ${seconds}s`);
     }
 
     show(text) {

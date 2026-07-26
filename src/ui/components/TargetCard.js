@@ -1,9 +1,12 @@
-import { Container, Graphics, Sprite, Text } from "pixi.js";
+import { AnimatedSprite, Container, Graphics, Sprite, Text } from "pixi.js";
 import { AssetId, AssetLoader } from "../../services/AssetLoader.js";
 import { HUD_COLORS, createPanel, fitSprite } from "./HudStyles.js";
 import { TargetCharge } from "./TargetCharge.js";
 import { TargetSkillBadge } from "./TargetSkillBadge.js";
 
+/**
+ * Hien thi mot target, tien do fill va feedback cua skill tuong ung.
+ */
 export class TargetCard extends Container {
     constructor({ monsterType, ticker, targetLimit, cardSize }) {
         super();
@@ -19,7 +22,12 @@ export class TargetCard extends Container {
         const background = createPanel(cardSize, cardSize, 10, 2);
         this.progressFill = new Graphics();
         const basket = new Sprite(AssetLoader.get(AssetId.BASKET));
-        const monster = new Sprite(AssetLoader.get(monsterType));
+        this.monster = new AnimatedSprite({
+            textures: AssetLoader.getAnimationFrames(monsterType),
+            animationSpeed: 0.08,
+            autoPlay: true,
+            autoUpdate: false,
+        });
         this.countText = new Text({
             text: `0 / ${targetLimit}`,
             style: {
@@ -39,9 +47,9 @@ export class TargetCard extends Container {
         fitSprite(basket, cardSize * 0.78);
         basket.alpha = 0.92;
 
-        monster.anchor.set(0.5);
-        monster.position.set(cardSize / 2, cardSize / 2 - 1);
-        fitSprite(monster, cardSize * 0.5);
+        this.monster.anchor.set(0.5);
+        this.monster.position.set(cardSize / 2, cardSize / 2 - 1);
+        fitSprite(this.monster, cardSize * 0.5);
         this.countText.anchor.set(0.5);
         this.countText.position.set(cardSize / 2, cardSize + 13);
 
@@ -49,14 +57,17 @@ export class TargetCard extends Container {
             background,
             this.progressFill,
             basket,
-            monster,
+            this.monster,
             this.skillBadge,
             this.countText
         );
+        // Dung ticker cua game de animation dung cung luc voi HUD va duoc go khi destroy.
+        this.ticker?.add(this.monster.update, this.monster);
         this.renderProgress(0);
     }
 
     add(amount, canActivate = true) {
+        // Logic charge duoc tach khoi view de card chi lo hien thi.
         const { activationCount, value } = this.charge.add(
             amount,
             canActivate
@@ -77,10 +88,18 @@ export class TargetCard extends Container {
     }
 
     setSkillCountdown(multiplier, seconds) {
-        this.skillBadge.setCountdown(multiplier, seconds);
+        this.skillBadge.setCountdown(
+            `\u00d7${multiplier}`,
+            seconds
+        );
+    }
+
+    setSkillTimer(label, seconds) {
+        this.skillBadge.setCountdown(label, seconds);
     }
 
     animateToTarget() {
+        // Tween fill giup nguoi choi nhin thay tien do tang dan.
         if (this.animation) {
             this.stopProgressAnimation();
         }
@@ -114,6 +133,7 @@ export class TargetCard extends Container {
     }
 
     renderProgress(value) {
+        // Fill di tu day len va nam sau hinh quai.
         const inset = 3;
         const innerSize = this.cardSize - inset * 2;
         const fillHeight = innerSize * (value / this.targetLimit);
@@ -136,6 +156,8 @@ export class TargetCard extends Container {
 
     destroy(options) {
         this.stopProgressAnimation();
+        this.ticker?.remove(this.monster.update, this.monster);
+        this.monster.stop();
         super.destroy(options);
     }
 }

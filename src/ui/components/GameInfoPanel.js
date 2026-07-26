@@ -3,6 +3,9 @@ import { GameConfig } from "../../config/GameConfig.js";
 import { MetricPanel } from "./MetricPanel.js";
 import { HUD_COLORS, createPanel, redrawPanel } from "./HudStyles.js";
 
+/**
+ * Hien thi thoi gian va diem so cua van choi.
+ */
 export class GameInfoPanel extends Container {
     constructor() {
         super();
@@ -42,6 +45,7 @@ export class GameInfoPanel extends Container {
     }
 
     setMobile(isMobile) {
+        // Mobile dat hai metric nam ngang de tiet kiem chieu cao.
         this.panelWidth = isMobile ? this.mobileWidth : 230;
         this.panelHeight = isMobile ? this.mobileHeight : 232;
         redrawPanel(

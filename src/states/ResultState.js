@@ -1,5 +1,8 @@
 import { Container, Graphics, Text } from "pixi.js";
 
+/**
+ * Hien thi man ket thuc va tong diem cua van choi.
+ */
 export class ResultState {
     constructor(game) {
         this.game = game;

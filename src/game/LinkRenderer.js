@@ -1,5 +1,8 @@
 import { Container, Graphics } from "pixi.js";
 
+/**
+ * Ve duong noi va glow giua cac quai dang duoc chon.
+ */
 export class LinkRenderer extends Container {
     constructor({ cellSize, config }) {
         super();
@@ -17,6 +20,7 @@ export class LinkRenderer extends Container {
     }
 
     render(monsters, pointerPosition = null) {
+        // Ve hai lop de tao loi trang va glow ben ngoai.
         const points = monsters.map((monster) => this.getMonsterCenter(monster));
 
         if (pointerPosition) {

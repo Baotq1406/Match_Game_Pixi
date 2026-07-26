@@ -1,3 +1,6 @@
+/**
+ * Skill PIG cong diem thuong truc tiep.
+ */
 export class PigScoreSkill {
     constructor({ bonusScore, addScore }) {
         this.bonusScore = bonusScore;

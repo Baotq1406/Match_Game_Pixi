@@ -1,3 +1,6 @@
+/**
+ * Skill CAT cong them thoi gian cho van choi.
+ */
 export class CatTimeSkill {
     constructor({ bonusSeconds, addTime }) {
         this.bonusSeconds = bonusSeconds;

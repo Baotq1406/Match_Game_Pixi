@@ -6,6 +6,9 @@ import { GameConfig } from "../config/GameConfig.js";
 import { ResultState } from "./ResultState.js";
 import { MonsterSkillManager } from "../game/skills/MonsterSkillManager.js";
 
+/**
+ * Dieu phoi board, HUD, diem, thoi gian va skill trong mot van choi.
+ */
 export class GameplayState {
     constructor(game) {
         this.game = game;
@@ -21,6 +24,7 @@ export class GameplayState {
     }
 
     async enter() {
+        // Tao board va HUD truoc, sau do moi mo input cho nguoi choi.
         this.board = new Board();
 
         this.board.position.set(
@@ -39,8 +43,8 @@ export class GameplayState {
             config: GameConfig.board,
         });
         this.board.addChild(this.linkRenderer);
-        this.inputController = new InputController(this.board, this.linkRenderer);
         this.skillManager = new MonsterSkillManager({
+            // Skill chi giao tiep voi state qua cac callback nay.
             addTime: (seconds) => {
                 this.timeRemaining += seconds;
                 this.hud.setTime(Math.ceil(this.timeRemaining));
@@ -62,22 +66,59 @@ export class GameplayState {
                     seconds
                 );
             },
+            setSkillTimer: (monsterType, label, seconds) => {
+                this.hud.setSkillTimer(monsterType, label, seconds);
+            },
+            setMonsterDisplayType: (monsterType, displayType) => {
+                this.board.setMonsterDisplayType(
+                    monsterType,
+                    displayType
+                );
+            },
+            getMonstersByType: (monsterType) =>
+                this.board.getMonstersByType(monsterType),
+            showFeedback: (monsterType, text) => {
+                this.hud.showTargetSkillFeedback(monsterType, text);
+            },
         });
+        this.inputController = new InputController(
+            this.board,
+            this.linkRenderer,
+            {
+                // Input chi hoi rule, khong can biet Owl active hay con bao lau.
+                canConnect: (chain, candidate) =>
+                    this.skillManager.canConnect(chain, candidate),
+            }
+        );
 
         this.board.on("chainCompleted", ({ monsters }) => {
             if (this.isGameOver) {
                 return;
             }
 
+            // Tinh diem bang buff cu truoc, skill vua nap day ap dung tu sau do.
             const activatedSkills = this.hud.collect(monsters);
             this.score +=
                 this.skillManager.calculateCollectionScore(monsters);
+            // Context dung chung giup cac skill trong mot luot khong xu ly trung.
+            const activationContext = {
+                claimedMonsters: new Set(),
+            };
+            // Set loai bo quai trung khi Rabbit clear trung quai trong chuoi goc.
+            const monstersToClear = new Set(monsters);
             activatedSkills.forEach((monsterType) => {
-                this.skillManager.activate(monsterType);
+                const result = this.skillManager.activate(
+                    monsterType,
+                    activationContext
+                );
+                result?.monstersToClear?.forEach((monster) => {
+                    monstersToClear.add(monster);
+                });
             });
 
             this.hud.setScore(this.score);
-            void this.board.resolveChain(monsters);
+            // Chi refill mot lan de tranh hai animation cung sua board mot luc.
+            void this.board.resolveChain([...monstersToClear]);
         });
 
         this.hud.setTime(this.timeRemaining);
@@ -92,6 +133,7 @@ export class GameplayState {
 
         this.skillManager?.update(deltaMilliseconds);
 
+        //Dong ho game dung delta cua Pixi ticker.
         this.timeRemaining = Math.max(
             0,
             this.timeRemaining - deltaMilliseconds / 1000
@@ -112,6 +154,7 @@ export class GameplayState {
             return;
         }
 
+        // Skill phai duoc tat truoc khi board va HUD bi huy.
         this.inputController?.destroy();
         this.isRunning = false;
         this.skillManager?.destroy();
@@ -142,6 +185,7 @@ export class GameplayState {
         let displayedBoardScale = 1;
 
         if (isMobile) {
+            // Mobile danh khoang trong giua hai panel cho board.
             this.hud.layout(
                 window.innerWidth,
                 window.innerHeight,
@@ -174,6 +218,7 @@ export class GameplayState {
             this.board.scale.set(displayedBoardScale);
             this.board.position.set(boardX, boardY);
         } else if (isCompact) {
+            // Compact dat HUD o tren va co board de vua chieu cao con lai.
             this.hud.layout(
                 window.innerWidth,
                 window.innerHeight,

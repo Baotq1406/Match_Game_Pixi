@@ -1,5 +1,8 @@
 import { Board } from "../game/Board.js";
 
+/**
+ * State khoi dau dung de chuan bi board truoc khi vao gameplay.
+ */
 export class StartState {
     constructor(game) {
         this.game = game;

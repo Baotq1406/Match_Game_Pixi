@@ -7,6 +7,9 @@ import { GameConfig } from "../../config/GameConfig.js";
 import { createPanel, HUD_COLORS, redrawPanel } from "./HudStyles.js";
 import { TargetCard } from "./TargetCard.js";
 
+/**
+ * Quan ly danh sach target va phat hien target nao vua nap day skill.
+ */
 export class TargetPanel extends Container {
     constructor({ ticker }) {
         super();
@@ -16,6 +19,7 @@ export class TargetPanel extends Container {
         this.countGap = 22;
         this.targetLimit = GameConfig.targetMonsterCount;
         this.cards = new Map();
+        // Map nay vua luu feedback vua danh dau target da co skill hoan chinh.
         this.skillFeedback = new Map([
             [
                 AssetId.MONSTER_CAT,
@@ -28,6 +32,11 @@ export class TargetPanel extends Container {
             [
                 AssetId.MONSTER_SHEEP,
                 `×${GameConfig.monsterSkills.sheep.scoreMultiplier} ${GameConfig.monsterSkills.sheep.durationSeconds}s`,
+            ],
+            [AssetId.MONSTER_RABBIT, "CLEAR!"],
+            [
+                AssetId.MONSTER_OWL,
+                `ANY ${GameConfig.monsterSkills.owl.durationSeconds}s`,
             ],
         ]);
         this.horizontalWidth =
@@ -76,6 +85,8 @@ export class TargetPanel extends Container {
     }
 
     collect(monsters) {
+        // Dem theo type that, vi Owl doi hinh nhung type van la Owl.
+        // Gom theo loai de mot chuoi wildcard co the nap nhieu target.
         const collected = new Map();
         const activatedSkills = [];
 
@@ -90,6 +101,7 @@ export class TargetPanel extends Container {
                 card?.add(amount, hasImplementedSkill) ?? 0;
 
             for (let index = 0; index < activationCount; index++) {
+                // Mot lan thu thap lon co the kich hoat nhieu chu ky skill.
                 activatedSkills.push(monsterType);
             }
 
@@ -109,7 +121,16 @@ export class TargetPanel extends Container {
             ?.setSkillCountdown(multiplier, seconds);
     }
 
+    setSkillTimer(monsterType, label, seconds) {
+        this.cards.get(monsterType)?.setSkillTimer(label, seconds);
+    }
+
+    showSkillFeedback(monsterType, text) {
+        this.cards.get(monsterType)?.showSkillFeedback(text);
+    }
+
     setVertical(isVertical) {
+        // Desktop rong dung cot doc, cac kich thuoc con lai dung hang ngang.
         this.panelWidth = isVertical
             ? this.verticalWidth
             : this.horizontalWidth;

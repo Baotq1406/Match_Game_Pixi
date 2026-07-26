@@ -1,3 +1,4 @@
+// Cau hinh tap trung de gameplay, board va UI dung chung mot nguon gia tri.
 export const GameConfig = Object.freeze({
     designWidth: 680,
     designHeight: 680,
@@ -16,6 +17,13 @@ export const GameConfig = Object.freeze({
         sheep: Object.freeze({
             scoreMultiplier: 2,
             durationSeconds: 20,
+        }),
+        rabbit: Object.freeze({
+            pointsPerMonster: 1,
+        }),
+        owl: Object.freeze({
+            durationSeconds: 20,
+            cycleIntervalMilliseconds: 500,
         }),
     }),
 

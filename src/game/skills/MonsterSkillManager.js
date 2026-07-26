@@ -98,6 +98,15 @@ export class MonsterSkillManager {
         );
     }
 
+    getTargetCollectibleMonsters(monsters) {
+        // Moi skill co the tu tu choi nap target ma khong sua GameplayState.
+        return monsters.filter((monster) =>
+            [...this.skills.values()].every(
+                (skill) => skill.canAddToTarget?.(monster.type) ?? true
+            )
+        );
+    }
+
     calculateCollectionScore(monsters) {
         // Owl lay loai chinh cua chuoi truoc khi tra cuu multiplier.
         // Nho vay Owl trong chuoi Sheep se nhan cung he so x2 cua Sheep.

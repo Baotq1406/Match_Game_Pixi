@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { GameConfig } from "../config/GameConfig.js";
-import { GameplayState } from "../states/GameplayState.js";
+import { StartState } from "../states/StartState.js";
 import { AssetLoader } from "../services/AssetLoader.js";
 import { StateMachine } from "../core/StateMachine.js";
 
@@ -40,10 +40,10 @@ export class GameManager {
     }
 
     async start() {
-        // Tai tai nguyen truoc khi chuyen vao man choi chinh.
+        // Tai tai nguyen truoc khi hien thi main menu.
         this.resize();
         await AssetLoader.load();
-        await this.stateMachine.changeState(GameplayState);
+        await this.stateMachine.changeState(StartState);
     }
 
     resize() {

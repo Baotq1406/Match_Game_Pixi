@@ -3,6 +3,7 @@ export const GameConfig = Object.freeze({
     designWidth: 680,
     designHeight: 680,
     viewportPaddingRatio: 0.025,
+    mobileBreakpoint: 900,
     roundDurationSeconds: 120,
     targetScore: 500,
     targetMonsterCount: 20,

@@ -2,6 +2,12 @@ import { Assets } from "pixi.js";
 
 export const AssetId = Object.freeze({
     BASKET: "basket",
+    BACKGROUND_GAME_START: "background-game-start",
+    BACKGROUND_GAME_START_MOBILE: "background-game-start-mobile",
+    BUTTON_START_NORMAL: "button-start-normal",
+    BUTTON_START_HOVER: "button-start-hover",
+    BUTTON_GUIDE_NORMAL: "button-guide-normal",
+    BUTTON_GUIDE_HOVER: "button-guide-hover",
     MONSTER_CAT: "monster-cat",
     MONSTER_PIG: "monster-pig",
     MONSTER_SHEEP: "monster-sheep",
@@ -58,6 +64,30 @@ const GAME_ASSETS = [
     {
         alias: AssetId.BASKET,
         src: "/assets/Basket.png",
+    },
+    {
+        alias: AssetId.BACKGROUND_GAME_START,
+        src: "/assets/Background/Background_Game_Start.png",
+    },
+    {
+        alias: AssetId.BACKGROUND_GAME_START_MOBILE,
+        src: "/assets/Background/Background_For_Android_Game_Start.png",
+    },
+    {
+        alias: AssetId.BUTTON_START_NORMAL,
+        src: "/assets/Button/Button_start_normal.png",
+    },
+    {
+        alias: AssetId.BUTTON_START_HOVER,
+        src: "/assets/Button/Button_start_hover.png",
+    },
+    {
+        alias: AssetId.BUTTON_GUIDE_NORMAL,
+        src: "/assets/Button/Button_guide_normal.png",
+    },
+    {
+        alias: AssetId.BUTTON_GUIDE_HOVER,
+        src: "/assets/Button/Button_guide_hover.png",
     },
     {
         alias: AssetId.MONSTER_CAT,

@@ -96,8 +96,13 @@ export class GameplayState {
                 return;
             }
 
+            // Owl active van tinh diem, nhung Owl khong duoc nap lai target.
+            const targetCollectibleMonsters =
+                this.skillManager.getTargetCollectibleMonsters(monsters);
             // Tinh diem bang buff cu truoc, skill vua nap day ap dung tu sau do.
-            const activatedSkills = this.hud.collect(monsters);
+            const activatedSkills = this.hud.collect(
+                targetCollectibleMonsters
+            );
             this.score +=
                 this.skillManager.calculateCollectionScore(monsters);
             // Context dung chung giup cac skill trong mot luot khong xu ly trung.

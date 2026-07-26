@@ -91,6 +91,13 @@ export class OwlWildcardSkill {
         );
     }
 
+    canAddToTarget(monsterType) {
+        // Owl dang la wildcard thi khong duoc nap lai target cua chinh no.
+        return !(
+            this.isActive && monsterType === this.monsterType
+        );
+    }
+
     resolveScoreType(monsterType, chain) {
         if (!this.isActive || monsterType !== this.monsterType) {
             return monsterType;

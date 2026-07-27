@@ -88,6 +88,7 @@ export class InputController {
 
         this.board.emit(isValid ? "chainCompleted" : "chainCancelled", {
             monsters,
+            reason: "released",
         });
     }
 
@@ -164,7 +165,10 @@ export class InputController {
         this.linkRenderer.clear();
         this.chain = [];
         this.isDragging = false;
-        this.board.emit("chainCancelled", { monsters });
+        this.board.emit("chainCancelled", {
+            monsters,
+            reason: "interrupted",
+        });
     }
 
     destroy() {

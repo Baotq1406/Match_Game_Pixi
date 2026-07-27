@@ -2,6 +2,7 @@ import { Container } from "pixi.js";
 import { GameConfig } from "../config/GameConfig.js";
 import { StartState } from "../states/StartState.js";
 import { AssetLoader } from "../services/AssetLoader.js";
+import { AudioManager } from "../services/AudioManager.js";
 import { StateMachine } from "./StateMachine.js";
 
 /**
@@ -31,6 +32,7 @@ export class GameManager {
         this.root = new Container();
         this.app.stage.addChild(this.root);
         this.stateMachine = new StateMachine(this);
+        this.audioManager = new AudioManager();
         this.handleResize = () => this.resize();
         this.handleTick = (ticker) => this.stateMachine.update(ticker.deltaMS);
 
@@ -83,6 +85,7 @@ export class GameManager {
         this.stateMachine.currentState?.exit?.();
         this.stateMachine.currentState?.destroy?.();
         this.stateMachine.currentState = null;
+        this.audioManager.destroy();
         this.root.destroy({ children: true });
         GameManager.instance = null;
     }

@@ -23,7 +23,7 @@ export class UIManager extends Container {
             return UIManager.instance;
         }
 
-        this.infoPanel = new GameInfoPanel();
+        this.infoPanel = new GameInfoPanel({ ticker });
         this.targetPanel = new TargetPanel({ ticker });
         this.mobileBoardTop = 0;
         this.mobileBoardBottom = 0;
@@ -42,6 +42,14 @@ export class UIManager extends Container {
 
     setScore(score) {
         this.infoPanel.setScore(score);
+    }
+
+    showTimeIncrease(previousValue, amount) {
+        this.infoPanel.showTimeIncrease(previousValue, amount);
+    }
+
+    showScoreIncrease(previousValue, amount) {
+        this.infoPanel.showScoreIncrease(previousValue, amount);
     }
 
     setSkillCountdown(monsterType, multiplier, seconds) {

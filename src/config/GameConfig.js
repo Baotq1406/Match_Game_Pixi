@@ -6,11 +6,12 @@ export const GameConfig = Object.freeze({
     mobileBreakpoint: 900,
     roundDurationSeconds: 150,
     //roundDurationSeconds: 10,
+    lowTimeWarningSeconds: 30,
     targetMonsterCount: 20,
 
     monsterSkills: Object.freeze({
         cat: Object.freeze({
-            bonusSeconds: 15,
+            bonusSeconds: 10,
         }),
         pig: Object.freeze({
             bonusScore: 20,

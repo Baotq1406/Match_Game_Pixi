@@ -4,6 +4,7 @@ import { ImageButton } from "../ui/components/ImageButton.js";
 import { MenuButton } from "../ui/components/MenuButton.js";
 import { HUD_COLORS, createPanel } from "../ui/components/HudStyles.js";
 import { AssetId, AssetLoader } from "../services/AssetLoader.js";
+import { MusicTrack } from "../services/AudioManager.js";
 import { GameConfig } from "../config/GameConfig.js";
 
 /**
@@ -20,6 +21,7 @@ export class StartState {
     }
 
     async enter() {
+        this.game.audioManager.playMusic(MusicTrack.GAME);
         this.createBackground();
         this.view = new Container();
 

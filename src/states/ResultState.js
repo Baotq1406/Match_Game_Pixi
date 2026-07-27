@@ -4,6 +4,7 @@ import { StartState } from "./StartState.js";
 import { ImageButton } from "../ui/components/ImageButton.js";
 import { HUD_COLORS } from "../ui/components/HudStyles.js";
 import { AssetId, AssetLoader } from "../services/AssetLoader.js";
+import { MusicTrack } from "../services/AudioManager.js";
 import { GameConfig } from "../config/GameConfig.js";
 
 const POPUP_VISIBLE_BOUNDS = Object.freeze({
@@ -29,6 +30,7 @@ export class ResultState {
     }
 
     async enter({ score = 0 } = {}) {
+        this.game.audioManager.playMusic(MusicTrack.RESULT);
         this.createBackground();
         this.view = new Container();
 

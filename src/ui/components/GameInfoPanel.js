@@ -6,7 +6,7 @@ import { HUD_COLORS, createPanel, redrawPanel } from "./HudStyles.js";
  * Hien thi thoi gian va diem so cua van choi.
  */
 export class GameInfoPanel extends Container {
-    constructor() {
+    constructor({ ticker } = {}) {
         super();
 
         this.panelWidth = 230;
@@ -36,12 +36,14 @@ export class GameInfoPanel extends Container {
             value: "0",
             valueColor: HUD_COLORS.accent,
             width: this.metricWidth,
+            ticker,
         });
         this.score = new MetricPanel({
             label: "SCORE",
             value: "0",
             valueColor: HUD_COLORS.border,
             width: this.metricWidth,
+            ticker,
         });
 
         this.title.position.set(14, 12);
@@ -76,5 +78,13 @@ export class GameInfoPanel extends Container {
 
     setScore(score) {
         this.score.setValue(score);
+    }
+
+    showTimeIncrease(previousValue, amount) {
+        this.timer.showIncrease(previousValue, amount);
+    }
+
+    showScoreIncrease(previousValue, amount) {
+        this.score.showIncrease(previousValue, amount);
     }
 }

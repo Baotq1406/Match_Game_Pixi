@@ -15,6 +15,7 @@ export class InputController {
             ((chain, monster) => monster.type === chain[0]?.type);
         this.chain = [];
         this.isDragging = false;
+        this.isEnabled = true;
 
         this.board.eventMode = "static";
         this.board.hitArea = new Rectangle(
@@ -32,7 +33,11 @@ export class InputController {
 
     onPointerDown(event) {
         // Khong nhan input khi board dang tao hoac refill quai.
-        if (this.board.isBusy || !this.board.isReady) {
+        if (
+            !this.isEnabled ||
+            this.board.isBusy ||
+            !this.board.isReady
+        ) {
             return;
         }
 
@@ -54,7 +59,7 @@ export class InputController {
     }
 
     onPointerMove(event) {
-        if (!this.isDragging) {
+        if (!this.isEnabled || !this.isDragging) {
             return;
         }
 
@@ -70,7 +75,7 @@ export class InputController {
 
     onPointerUp() {
         // Chuoi tu ba quai tro len moi duoc tinh la mot lan thu thap.
-        if (!this.isDragging) {
+        if (!this.isEnabled || !this.isDragging) {
             return;
         }
 
@@ -144,6 +149,22 @@ export class InputController {
 
     toBoardPosition(globalPosition) {
         return this.board.toLocal(globalPosition);
+    }
+
+    setEnabled(isEnabled) {
+        this.isEnabled = isEnabled;
+        this.board.eventMode = isEnabled ? "static" : "none";
+
+        if (isEnabled || !this.isDragging) {
+            return;
+        }
+
+        // Huy chuoi dang keo de sau khi resume khong thu thap nham.
+        const monsters = [...this.chain];
+        this.linkRenderer.clear();
+        this.chain = [];
+        this.isDragging = false;
+        this.board.emit("chainCancelled", { monsters });
     }
 
     destroy() {

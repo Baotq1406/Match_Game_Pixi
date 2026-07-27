@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { GameConfig } from "../config/GameConfig.js";
 import { StartState } from "../states/StartState.js";
 import { AssetLoader } from "../services/AssetLoader.js";
-import { StateMachine } from "../core/StateMachine.js";
+import { StateMachine } from "./StateMachine.js";
 
 /**
  * Quan ly vong doi game, root hien thi va state dang hoat dong.
@@ -54,6 +54,15 @@ export class GameManager {
         const padding = shortestSide * GameConfig.viewportPaddingRatio;
         const availableWidth = Math.max(1, screenWidth - padding * 2);
         const availableHeight = Math.max(1, screenHeight - padding * 2);
+
+        // Dong bo renderer truoc khi state layout de tranh app.screen con kich thuoc cu.
+        if (
+            this.app.screen.width !== screenWidth ||
+            this.app.screen.height !== screenHeight
+        ) {
+            this.app.renderer.resize(screenWidth, screenHeight);
+        }
+
         const scale = Math.min(
             availableWidth / this.designWidth,
             availableHeight / this.designHeight

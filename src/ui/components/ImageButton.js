@@ -11,6 +11,7 @@ export class ImageButton extends Container {
         height,
         normalFrame,
         hoverFrame,
+        fitMode = "stretch",
         onPress,
     }) {
         super();
@@ -20,6 +21,7 @@ export class ImageButton extends Container {
         this.hoverTexture = hoverTexture;
         this.normalFrame = normalFrame;
         this.hoverFrame = hoverFrame;
+        this.fitMode = fitMode;
         this.onPress = onPress;
         this.isEnabled = true;
         this.isHovered = false;
@@ -54,13 +56,27 @@ export class ImageButton extends Container {
         }
 
         // Asset guide co canvas trong suot lon. Scale theo phan icon thuc te.
-        const scaleX = this.buttonWidth / visibleFrame.width;
-        const scaleY = this.buttonHeight / visibleFrame.height;
+        let scaleX = this.buttonWidth / visibleFrame.width;
+        let scaleY = this.buttonHeight / visibleFrame.height;
+        let contentOffsetX = 0;
+        let contentOffsetY = 0;
+
+        if (this.fitMode === "contain") {
+            // Contain giu dung ti le asset khi normal va hover co canvas khac nhau.
+            const uniformScale = Math.min(scaleX, scaleY);
+            scaleX = uniformScale;
+            scaleY = uniformScale;
+            contentOffsetX =
+                (this.buttonWidth - visibleFrame.width * uniformScale) / 2;
+            contentOffsetY =
+                (this.buttonHeight - visibleFrame.height * uniformScale) / 2;
+        }
+
         this.sprite.width = texture.width * scaleX;
         this.sprite.height = texture.height * scaleY;
         this.sprite.position.set(
-            -visibleFrame.x * scaleX,
-            -visibleFrame.y * scaleY
+            contentOffsetX - visibleFrame.x * scaleX,
+            contentOffsetY - visibleFrame.y * scaleY
         );
     }
 

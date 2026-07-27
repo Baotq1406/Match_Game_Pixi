@@ -4,10 +4,19 @@ export const AssetId = Object.freeze({
     BASKET: "basket",
     BACKGROUND_GAME_START: "background-game-start",
     BACKGROUND_GAME_START_MOBILE: "background-game-start-mobile",
+    BACKGROUND_GAME_OVER: "background-game-over",
+    BACKGROUND_GAME_OVER_MOBILE: "background-game-over-mobile",
+    POPUP_GAME_OVER: "popup-game-over",
     BUTTON_START_NORMAL: "button-start-normal",
     BUTTON_START_HOVER: "button-start-hover",
     BUTTON_GUIDE_NORMAL: "button-guide-normal",
     BUTTON_GUIDE_HOVER: "button-guide-hover",
+    BUTTON_HOME_NORMAL: "button-home-normal",
+    BUTTON_HOME_HOVER: "button-home-hover",
+    BUTTON_RETRY_NORMAL: "button-retry-normal",
+    BUTTON_RETRY_HOVER: "button-retry-hover",
+    BUTTON_PAUSE_NORMAL: "button-pause-normal",
+    BUTTON_PAUSE_HOVER: "button-pause-hover",
     MONSTER_CAT: "monster-cat",
     MONSTER_PIG: "monster-pig",
     MONSTER_SHEEP: "monster-sheep",
@@ -71,7 +80,19 @@ const GAME_ASSETS = [
     },
     {
         alias: AssetId.BACKGROUND_GAME_START_MOBILE,
-        src: "/assets/Background/Background_For_Android_Game_Start.png",
+        src: "/assets/Background/Background_For_Mobile_Game_Start.png",
+    },
+    {
+        alias: AssetId.BACKGROUND_GAME_OVER,
+        src: "/assets/Background/Background_game_over.png",
+    },
+    {
+        alias: AssetId.BACKGROUND_GAME_OVER_MOBILE,
+        src: "/assets/Background/Background_game_over_for_mobile.png",
+    },
+    {
+        alias: AssetId.POPUP_GAME_OVER,
+        src: "/assets/Pop_up/Pop_up_game_over.png",
     },
     {
         alias: AssetId.BUTTON_START_NORMAL,
@@ -88,6 +109,30 @@ const GAME_ASSETS = [
     {
         alias: AssetId.BUTTON_GUIDE_HOVER,
         src: "/assets/Button/Button_guide_hover.png",
+    },
+    {
+        alias: AssetId.BUTTON_HOME_NORMAL,
+        src: "/assets/Button/button_home_normal.png",
+    },
+    {
+        alias: AssetId.BUTTON_HOME_HOVER,
+        src: "/assets/Button/button_home_hover.png",
+    },
+    {
+        alias: AssetId.BUTTON_RETRY_NORMAL,
+        src: "/assets/Button/button_retry_normal.png",
+    },
+    {
+        alias: AssetId.BUTTON_RETRY_HOVER,
+        src: "/assets/Button/button_retry_hover.png",
+    },
+    {
+        alias: AssetId.BUTTON_PAUSE_NORMAL,
+        src: "/assets/Button/Button_pause_normal.png",
+    },
+    {
+        alias: AssetId.BUTTON_PAUSE_HOVER,
+        src: "/assets/Button/Button_pause_hover.png",
     },
     {
         alias: AssetId.MONSTER_CAT,

@@ -4,13 +4,13 @@ export const GameConfig = Object.freeze({
     designHeight: 680,
     viewportPaddingRatio: 0.025,
     mobileBreakpoint: 900,
-    roundDurationSeconds: 120,
-    targetScore: 500,
+    roundDurationSeconds: 150,
+    //roundDurationSeconds: 10,
     targetMonsterCount: 20,
 
     monsterSkills: Object.freeze({
         cat: Object.freeze({
-            bonusSeconds: 10,
+            bonusSeconds: 15,
         }),
         pig: Object.freeze({
             bonusScore: 20,

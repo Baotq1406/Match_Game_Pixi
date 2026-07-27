@@ -1,5 +1,4 @@
 import { Container, Text } from "pixi.js";
-import { GameConfig } from "../../config/GameConfig.js";
 import { MetricPanel } from "./MetricPanel.js";
 import { HUD_COLORS, createPanel, redrawPanel } from "./HudStyles.js";
 
@@ -13,7 +12,13 @@ export class GameInfoPanel extends Container {
         this.panelWidth = 230;
         this.panelHeight = 232;
         this.metricWidth = this.panelWidth - 24;
-        this.mobileWidth = this.metricWidth * 2 + 8 + 24;
+        // Chua mot o rieng ben phai cho nut Pause tren mobile.
+        this.mobilePauseSlotWidth = 56;
+        this.mobileWidth =
+            this.metricWidth * 2 +
+            8 +
+            24 +
+            this.mobilePauseSlotWidth;
         this.mobileHeight = 82;
         this.background = createPanel(this.panelWidth, this.panelHeight, 18, 2);
         this.title = new Text({
@@ -28,13 +33,13 @@ export class GameInfoPanel extends Container {
         });
         this.timer = new MetricPanel({
             label: "TIME",
-            value: String(GameConfig.roundDurationSeconds),
+            value: "0",
             valueColor: HUD_COLORS.accent,
             width: this.metricWidth,
         });
         this.score = new MetricPanel({
-            label: "AIM SCORE",
-            value: `0 / ${GameConfig.targetScore}`,
+            label: "SCORE",
+            value: "0",
             valueColor: HUD_COLORS.border,
             width: this.metricWidth,
         });
@@ -64,10 +69,12 @@ export class GameInfoPanel extends Container {
     }
 
     setTime(seconds) {
-        this.timer.setValue(Math.max(0, seconds));
+        const displayedSeconds = Math.max(0, seconds);
+        this.timer.setValue(displayedSeconds);
+        this.timer.setUrgency(displayedSeconds);
     }
 
     setScore(score) {
-        this.score.setValue(`${score} / ${GameConfig.targetScore}`);
+        this.score.setValue(score);
     }
 }

@@ -9,8 +9,10 @@ export class MenuButton extends Container {
         label,
         width = 240,
         height = 54,
+        fontSize = 18,
         primary = false,
         onPress,
+        onVisualChange,
     }) {
         super();
 
@@ -18,6 +20,7 @@ export class MenuButton extends Container {
         this.buttonHeight = height;
         this.primary = primary;
         this.onPress = onPress;
+        this.onVisualChange = onVisualChange;
         this.isEnabled = true;
         this.isHovered = false;
         this.background = new Graphics();
@@ -26,7 +29,7 @@ export class MenuButton extends Container {
             style: {
                 fill: primary ? 0x173b24 : HUD_COLORS.mutedText,
                 fontFamily: "Arial, sans-serif",
-                fontSize: 18,
+                fontSize,
                 fontWeight: "900",
                 letterSpacing: 1,
             },
@@ -64,6 +67,7 @@ export class MenuButton extends Container {
         this.isHovered = isHovered;
         this.scale.set(isHovered ? 1.04 : 1);
         this.redraw();
+        this.onVisualChange?.();
     }
 
     redraw() {
@@ -71,8 +75,22 @@ export class MenuButton extends Container {
         const fillColor = this.primary ? HUD_COLORS.targetFill : HUD_COLORS.panel;
         const fillAlpha = this.isHovered ? 1 : this.primary ? 0.94 : 0.98;
 
+        this.background.clear();
+
+        if (this.primary && this.isHovered) {
+            // Glow vang lam ro trang thai co the bam cua nut hanh dong chinh.
+            this.background
+                .roundRect(
+                    -3,
+                    -3,
+                    this.buttonWidth + 6,
+                    this.buttonHeight + 6,
+                    15
+                )
+                .fill({ color: HUD_COLORS.border, alpha: 0.22 });
+        }
+
         this.background
-            .clear()
             .roundRect(0, 0, this.buttonWidth, this.buttonHeight, 12)
             .fill({ color: fillColor, alpha: fillAlpha })
             .stroke({

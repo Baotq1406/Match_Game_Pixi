@@ -7,7 +7,7 @@ import {
 } from "./HudStyles.js";
 
 /**
- * Popup pause nam tren stage va chan moi input xuong gameplay.
+ * Popup pause nằm trên stage và chặn mọi input xuống gameplay.
  */
 export class PauseOverlay extends Container {
     constructor({ onContinue, onVisualChange }) {
@@ -37,7 +37,7 @@ export class PauseOverlay extends Container {
             onVisualChange,
         });
 
-        // Shade nhan pointer de popup khong lam lo click xuong board.
+        // Shade nhận pointer để popup không làm lọt click xuống board.
         this.shade.eventMode = "static";
         this.shade.cursor = "default";
         this.addChild(

@@ -5,7 +5,7 @@ import { TargetCharge } from "./TargetCharge.js";
 import { TargetSkillBadge } from "./TargetSkillBadge.js";
 
 /**
- * Hien thi mot target, tien do fill va feedback cua skill tuong ung.
+ * Hiển thị một target, tiến độ fill và feedback của skill tương ứng.
  */
 export class TargetCard extends Container {
     constructor({ monsterType, ticker, targetLimit, cardSize }) {
@@ -61,13 +61,13 @@ export class TargetCard extends Container {
             this.skillBadge,
             this.countText
         );
-        // Dung ticker cua game de animation dung cung luc voi HUD va duoc go khi destroy.
+        // Dùng ticker của game để animation dừng cùng lúc với HUD và được gỡ khi destroy.
         this.ticker?.add(this.monster.update, this.monster);
         this.renderProgress(0);
     }
 
     add(amount, canActivate = true) {
-        // Logic charge duoc tach khoi view de card chi lo hien thi.
+        // Logic charge được tách khỏi view để card chỉ lo hiển thị.
         const { activationCount, value } = this.charge.add(
             amount,
             canActivate
@@ -99,7 +99,7 @@ export class TargetCard extends Container {
     }
 
     animateToTarget() {
-        // Tween fill giup nguoi choi nhin thay tien do tang dan.
+        // Tween fill giúp người chơi nhìn thấy tiến độ tăng dần.
         if (this.animation) {
             this.stopProgressAnimation();
         }
@@ -133,7 +133,7 @@ export class TargetCard extends Container {
     }
 
     renderProgress(value) {
-        // Fill di tu day len va nam sau hinh quai.
+        // Fill đi từ đáy lên và nằm sau hình quái.
         const inset = 3;
         const innerSize = this.cardSize - inset * 2;
         const fillHeight = innerSize * (value / this.targetLimit);

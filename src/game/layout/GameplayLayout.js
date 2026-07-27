@@ -4,7 +4,7 @@ const MOBILE_BREAKPOINT = 900;
 const COMPACT_BREAKPOINT = 1500;
 
 /**
- * Tinh scale va vi tri cua board, HUD va giao dien Pause theo viewport.
+ * Tính scale và vị trí của board, HUD và giao diện Pause theo viewport.
  */
 export class GameplayLayout {
     constructor({ game, board, hud }) {
@@ -43,7 +43,7 @@ export class GameplayLayout {
             this.layoutDesktopBoard();
         }
 
-        // HUD can board bounds cuoi cung de chon kieu ngang hay doc.
+        // HUD cần board bounds cuối cùng để chọn kiểu ngang hay dọc.
         this.hud.layout(
             width,
             height,
@@ -51,14 +51,14 @@ export class GameplayLayout {
         );
         this.layoutPauseUI(pauseButton, pauseOverlay, width, height);
 
-        // Khi Pause, ticker dung nen resize phai ve lai mot frame.
+        // Khi Pause, ticker dừng nên resize phải vẽ lại một frame.
         if (isPaused) {
             this.game.app.render();
         }
     }
 
     layoutMobileBoard(width, height, rootScale, rootOffsetY) {
-        // Layout HUD lan dau de lay khoang trong danh cho board.
+        // Layout HUD lần đầu để lấy khoảng trống dành cho board.
         this.hud.layout(
             width,
             height,
@@ -92,7 +92,7 @@ export class GameplayLayout {
     }
 
     layoutCompactBoard(width, height, rootScale, rootOffsetY) {
-        // Compact dat HUD o tren va co board vao chieu cao con lai.
+        // Compact đặt HUD ở trên và co board vào chiều cao còn lại.
         this.hud.layout(
             width,
             height,
@@ -152,7 +152,7 @@ export class GameplayLayout {
         const isMobile = width < GameConfig.mobileBreakpoint;
 
         if (isMobile && this.hud.infoPanel) {
-            // Bounds da gom HUD scale nen icon nam dung trong o Pause.
+            // Bounds đã gồm HUD scale nên icon nằm đúng trong ô Pause.
             const infoBounds = this.hud.infoPanel.getBounds();
             const hudScale = this.hud.scale.x;
             const pauseSlotWidth =

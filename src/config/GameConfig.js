@@ -1,4 +1,4 @@
-// Cau hinh tap trung de gameplay, board va UI dung chung mot nguon gia tri.
+// Cấu hình tập trung để gameplay, board và UI dùng chung một nguồn giá trị.
 export const GameConfig = Object.freeze({
     designWidth: 680,
     designHeight: 680,

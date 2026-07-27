@@ -1,5 +1,5 @@
 /**
- * Skill RABBIT xoa toan bo Rabbit tren board va cong diem theo so luong.
+ * Skill RABBIT xóa toàn bộ Rabbit trên board và cộng điểm theo số lượng.
  */
 export class RabbitClearSkill {
     constructor({
@@ -17,7 +17,7 @@ export class RabbitClearSkill {
     }
 
     activate({ claimedMonsters = new Set() } = {}) {
-        // claimedMonsters ngan mot Rabbit bi tinh diem hai lan trong cung luot.
+        // claimedMonsters ngăn một Rabbit bị tính điểm hai lần trong cùng lượt.
         const monstersToClear = this.getMonstersByType(
             this.monsterType
         ).filter((monster) => !claimedMonsters.has(monster));
@@ -32,7 +32,7 @@ export class RabbitClearSkill {
         }
         this.showFeedback(this.monsterType, `+${earnedScore}`);
 
-        // Gameplay se gop danh sach nay voi chuoi goc va refill chi mot lan.
+        // Gameplay sẽ gộp danh sách này với chuỗi gốc và refill chỉ một lần.
         return { monstersToClear };
     }
 

@@ -7,7 +7,7 @@ import { ImageButton } from "../../ui/components/ImageButton.js";
 import { PauseOverlay } from "../../ui/components/PauseOverlay.js";
 
 /**
- * Quan ly pause thu cong, pause khi roi tab va vong doi popup Pause.
+ * Quản lý pause thủ công, pause khi rời tab và vòng đời popup Pause.
  */
 export class PauseController {
     constructor({
@@ -40,7 +40,7 @@ export class PauseController {
             hoverTexture: AssetLoader.get(
                 AssetId.BUTTON_PAUSE_HOVER
             ),
-            // Cat khoang trong suot de icon khong doi size khi hover.
+            // Cắt khoảng trong suốt để icon không đổi size khi hover.
             normalFrame: {
                 x: 227,
                 y: 41,
@@ -73,7 +73,7 @@ export class PauseController {
             return;
         }
 
-        // Khi quay lai tab, popup van cho nguoi choi bam Continue.
+        // Khi quay lại tab, popup vẫn cho người chơi bấm Continue.
         if (this.isPaused) {
             this.game.app.render();
         }
@@ -95,13 +95,13 @@ export class PauseController {
         this.pauseButton.setEnabled(false);
         this.pauseOverlay = new PauseOverlay({
             onContinue: () => this.resume(),
-            // Ticker dung nen hover can yeu cau render truc tiep.
+            // Ticker dừng nên hover cần yêu cầu render trực tiếp.
             onVisualChange: () => this.game.app.render(),
         });
         this.game.app.stage.addChild(this.pauseOverlay);
         this.layout();
 
-        // Ve popup truoc khi dung ticker de giao dien khong bi mat.
+        // Vẽ popup trước khi dừng ticker để giao diện không bị mất.
         this.game.app.render();
         this.pausedTickerState = {
             app: this.game.app.ticker.started,

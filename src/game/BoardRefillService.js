@@ -1,7 +1,7 @@
 import { MONSTER_ASSET_IDS } from "../services/AssetLoader.js";
 
 /**
- * Loai bo chuoi da thu thap, don quai xuong va tao quai moi.
+ * Loại bỏ chuỗi đã thu thập, dồn quái xuống và tạo quái mới.
  */
 export class BoardRefillService {
     constructor({ board, createMonster, animator, config }) {
@@ -12,7 +12,7 @@ export class BoardRefillService {
     }
 
     async resolveChain(chain) {
-        // Khoa board trong luc animation de tranh nhieu refill chong len nhau.
+        // Khóa board trong lúc animation để tránh nhiều refill chồng lên nhau.
         if (this.board.isBusy || !chain?.length) {
             return;
         }
@@ -22,7 +22,7 @@ export class BoardRefillService {
         const transitions = [];
 
         for (let column = 0; column < this.board.columns; column++) {
-            // Xu ly tung cot doc lap de tinh vi tri roi.
+            // Xử lý từng cột độc lập để tính vị trí rơi.
             const survivors = [];
 
             for (let row = this.board.rows - 1; row >= 0; row--) {
@@ -89,7 +89,7 @@ export class BoardRefillService {
         }
 
         selected.forEach((monster) => {
-            // Chi huy quai cu sau khi ma tran board da duoc cap nhat.
+            // Chỉ hủy quái cũ sau khi ma trận board đã được cập nhật.
             this.board.monsterLayer.removeChild(monster);
             monster.destroy({ children: true });
         });

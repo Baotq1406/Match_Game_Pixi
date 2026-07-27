@@ -15,7 +15,7 @@ const POPUP_VISIBLE_BOUNDS = Object.freeze({
 });
 
 /**
- * Hien thi diem ket thuc va cho phep retry hoac quay ve main menu.
+ * Hiển thị điểm kết thúc và cho phép retry hoặc quay về main menu.
  */
 export class ResultState {
     constructor(game) {
@@ -67,7 +67,7 @@ export class ResultState {
             this.homeButton,
             this.retryButton
         );
-        // Result nam tren stage de layout truc tiep theo kich thuoc viewport.
+        // Result nằm trên stage để layout trực tiếp theo kích thước viewport.
         this.game.app.stage.addChild(this.view);
         this.resize();
     }
@@ -113,7 +113,7 @@ export class ResultState {
 
         this.layoutBackground();
         this.layoutResult();
-        // Canvas Pixi co the resize o frame tiep theo khi browser zoom.
+        // Canvas Pixi có thể resize ở frame tiếp theo khi browser zoom.
         requestAnimationFrame(() => {
             this.layoutBackground();
             this.layoutResult();
@@ -134,7 +134,7 @@ export class ResultState {
             height / texture.height
         );
 
-        // Cover giu dung ti le anh va cat deu phan du o hai canh.
+        // Cover giữ đúng tỉ lệ ảnh và cắt đều phần dư ở hai cạnh.
         this.background.scale.set(scale);
         this.background.position.set(
             (width - texture.width * scale) / 2,
@@ -210,7 +210,7 @@ export class ResultState {
             return;
         }
 
-        // Khoa ca hai nut trong luc state machine dang don dep man cu.
+        // Khóa cả hai nút trong lúc state machine đang dọn dẹp màn cũ.
         this.isChangingState = true;
         this.retryButton.setEnabled(false);
         this.homeButton.setEnabled(false);

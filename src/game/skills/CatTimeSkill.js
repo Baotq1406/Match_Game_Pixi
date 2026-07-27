@@ -1,5 +1,5 @@
 /**
- * Skill CAT cong them thoi gian cho van choi.
+ * Skill CAT cộng thêm thời gian cho ván chơi.
  */
 export class CatTimeSkill {
     constructor({ bonusSeconds, addTime }) {

@@ -1,7 +1,7 @@
 import { Container, Rectangle, Sprite } from "pixi.js";
 
 /**
- * Nut tu asset anh voi texture thuong va texture khi re chuot.
+ * Nút từ asset ảnh với texture thường và texture khi rê chuột.
  */
 export class ImageButton extends Container {
     constructor({
@@ -55,14 +55,14 @@ export class ImageButton extends Container {
             return;
         }
 
-        // Asset guide co canvas trong suot lon. Scale theo phan icon thuc te.
+        // Asset guide có canvas trong suốt lớn. Scale theo phần icon thực tế.
         let scaleX = this.buttonWidth / visibleFrame.width;
         let scaleY = this.buttonHeight / visibleFrame.height;
         let contentOffsetX = 0;
         let contentOffsetY = 0;
 
         if (this.fitMode === "contain") {
-            // Contain giu dung ti le asset khi normal va hover co canvas khac nhau.
+            // Contain giữ đúng tỉ lệ asset khi normal và hover có canvas khác nhau.
             const uniformScale = Math.min(scaleX, scaleY);
             scaleX = uniformScale;
             scaleY = uniformScale;
@@ -94,7 +94,7 @@ export class ImageButton extends Container {
         }
 
         this.isHovered = isHovered;
-        // Doi dung texture hover de giu hieu ung glow do asset da thiet ke.
+        // Đổi đúng texture hover để giữ hiệu ứng glow do asset đã thiết kế.
         this.applyTexture(
             isHovered ? this.hoverTexture : this.normalTexture,
             isHovered ? this.hoverFrame : this.normalFrame

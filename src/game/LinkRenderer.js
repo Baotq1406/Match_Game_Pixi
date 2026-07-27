@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 
 /**
- * Ve duong noi va glow giua cac quai dang duoc chon.
+ * Vẽ đường nối và glow giữa các quái đang được chọn.
  */
 export class LinkRenderer extends Container {
     constructor({ cellSize, config }) {
@@ -25,7 +25,7 @@ export class LinkRenderer extends Container {
     }
 
     render(monsters, pointerPosition = null) {
-        // Ve hai lop de tao loi trang va glow ben ngoai.
+        // Vẽ hai lớp để tạo lõi trắng và glow bên ngoài.
         const points = monsters.map((monster) => this.getMonsterCenter(monster));
 
         if (pointerPosition) {
@@ -52,7 +52,7 @@ export class LinkRenderer extends Container {
             return;
         }
 
-        // Hat sang chay doc duong noi nen VFX van song khi nguoi choi giu chuot.
+        // Hạt sáng chạy dọc đường nối nên VFX vẫn sống khi người chơi giữ chuột.
         this.elapsedMilliseconds += deltaMilliseconds;
         this.drawVfx();
     }
@@ -123,7 +123,7 @@ export class LinkRenderer extends Container {
             return;
         }
 
-        // Ba hat nho chay lap de duong noi de nhin thay dang co nang luong.
+        // Ba hạt nhỏ chạy lặp để đường nối trông như đang có năng lượng.
         const particleCount = 3;
         const travel = this.elapsedMilliseconds / 700;
 

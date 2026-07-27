@@ -2,7 +2,7 @@ import { Application } from "pixi.js";
 import { GameManager } from "./core/GameManager.js";
 import "../public/style.css";
 
-// Diem khoi dong cua ung dung PixiJS.
+// Điểm khởi động của ứng dụng PixiJS.
 async function main() {
     const app = new Application();
 

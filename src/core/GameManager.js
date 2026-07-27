@@ -6,14 +6,14 @@ import { AudioManager } from "../services/AudioManager.js";
 import { StateMachine } from "./StateMachine.js";
 
 /**
- * Quan ly vong doi game, root hien thi va state dang hoat dong.
- * Chi cho phep mot instance ton tai trong cung mot thoi diem.
+ * Quản lý vòng đời game, root hiển thị và state đang hoạt động.
+ * Chỉ cho phép một instance tồn tại trong cùng một thời điểm.
  */
 export class GameManager {
     static instance = null;
 
     static getInstance(app) {
-        // Lan khoi tao dau tien bat buoc phai co PixiJS Application.
+        // Lần khởi tạo đầu tiên bắt buộc phải có PixiJS Application.
         if (!GameManager.instance && !app) {
             throw new Error("GameManager cần một PixiJS Application khi khởi tạo.");
         }
@@ -42,14 +42,14 @@ export class GameManager {
     }
 
     async start() {
-        // Tai tai nguyen truoc khi hien thi main menu.
+        // Tải tài nguyên trước khi hiển thị main menu.
         this.resize();
         await AssetLoader.load();
         await this.stateMachine.changeState(StartState);
     }
 
     resize() {
-        // Giu ti le thiet ke va can game vao giua man hinh.
+        // Giữ tỉ lệ thiết kế và căn game vào giữa màn hình.
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
         const shortestSide = Math.min(screenWidth, screenHeight);
@@ -57,7 +57,7 @@ export class GameManager {
         const availableWidth = Math.max(1, screenWidth - padding * 2);
         const availableHeight = Math.max(1, screenHeight - padding * 2);
 
-        // Dong bo renderer truoc khi state layout de tranh app.screen con kich thuoc cu.
+        // Đồng bộ renderer trước khi state layout để tránh app.screen còn kích thước cũ.
         if (
             this.app.screen.width !== screenWidth ||
             this.app.screen.height !== screenHeight
@@ -79,7 +79,7 @@ export class GameManager {
     }
 
     destroy() {
-        // Go toan bo listener de singleton co the duoc tao lai an toan.
+        // Gỡ toàn bộ listener để singleton có thể được tạo lại an toàn.
         window.removeEventListener("resize", this.handleResize);
         this.app.ticker.remove(this.handleTick);
         this.stateMachine.currentState?.exit?.();

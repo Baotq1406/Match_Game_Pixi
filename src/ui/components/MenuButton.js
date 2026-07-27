@@ -2,7 +2,7 @@ import { Container, Graphics, Text } from "pixi.js";
 import { HUD_COLORS } from "./HudStyles.js";
 
 /**
- * Nut menu dung chung cho Start va Result scene.
+ * Nút menu dùng chung cho Start và Result scene.
  */
 export class MenuButton extends Container {
     constructor({
@@ -71,14 +71,14 @@ export class MenuButton extends Container {
     }
 
     redraw() {
-        // Nut primary noi bat hanh dong chinh, nut thu cap giu do tuong phan nhe.
+        // Nút primary nổi bật hành động chính, nút thứ cấp giữ độ tương phản nhẹ.
         const fillColor = this.primary ? HUD_COLORS.targetFill : HUD_COLORS.panel;
         const fillAlpha = this.isHovered ? 1 : this.primary ? 0.94 : 0.98;
 
         this.background.clear();
 
         if (this.primary && this.isHovered) {
-            // Glow vang lam ro trang thai co the bam cua nut hanh dong chinh.
+            // Glow vàng làm rõ trạng thái có thể bấm của nút hành động chính.
             this.background
                 .roundRect(
                     -3,

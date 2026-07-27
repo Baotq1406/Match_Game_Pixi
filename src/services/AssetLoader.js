@@ -34,7 +34,7 @@ export const MONSTER_ASSET_IDS = Object.freeze([
 
 const TARGET_ANIMATION_FRAME_COUNT = 13;
 
-// Thu muc va tien to frame cua tung quai da duoc normalize cung kich thuoc.
+// Thư mục và tiền tố frame của từng quái đã được normalize cùng kích thước.
 const MONSTER_ANIMATION_SOURCES = Object.freeze({
     [AssetId.MONSTER_CAT]: { folder: "Cam", frameName: "Cat" },
     [AssetId.MONSTER_PIG]: { folder: "Hong", frameName: "Pig" },
@@ -48,7 +48,7 @@ function getMonsterFrameAssetId(monsterType, frameNumber) {
 }
 
 function createTargetAnimationAssets() {
-    // Frame 1 dung alias monsterType co san; chi can tai them frame 2 den 13.
+    // Frame 1 dùng alias monsterType có sẵn; chỉ cần tải thêm frame 2 đến 13.
     return MONSTER_ASSET_IDS.flatMap((monsterType) => {
         const source = MONSTER_ANIMATION_SOURCES[monsterType];
 
@@ -158,13 +158,13 @@ const GAME_ASSETS = [
 ];
 
 /**
- * Tai asset mot lan va cung cap texture theo alias.
+ * Tải asset một lần và cung cấp texture theo alias.
  */
 export class AssetLoader {
     static loadPromise = null;
 
     static load() {
-        // Dung chung promise de tranh tai trung asset khi goi nhieu lan.
+        // Dùng chung promise để tránh tải trùng asset khi gọi nhiều lần.
         if (!this.loadPromise) {
             this.loadPromise = Assets.load(GAME_ASSETS);
         }
@@ -185,7 +185,7 @@ export class AssetLoader {
     }
 
     static getAnimationFrames(monsterType) {
-        // Tra ve dung thu tu frame de AnimatedSprite lap animation tu 1 den 13.
+        // Trả về đúng thứ tự frame để AnimatedSprite lặp animation từ 1 đến 13.
         return Array.from(
             { length: TARGET_ANIMATION_FRAME_COUNT },
             (_, index) => {

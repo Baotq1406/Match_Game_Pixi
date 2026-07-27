@@ -3,7 +3,7 @@ import { MetricPanel } from "./MetricPanel.js";
 import { HUD_COLORS, createPanel, redrawPanel } from "./HudStyles.js";
 
 /**
- * Hien thi thoi gian va diem so cua van choi.
+ * Hiển thị thời gian và điểm số của ván chơi.
  */
 export class GameInfoPanel extends Container {
     constructor({ ticker } = {}) {
@@ -12,7 +12,7 @@ export class GameInfoPanel extends Container {
         this.panelWidth = 230;
         this.panelHeight = 232;
         this.metricWidth = this.panelWidth - 24;
-        // Chua mot o rieng ben phai cho nut Pause tren mobile.
+        // Chừa một ô riêng bên phải cho nút Pause trên mobile.
         this.mobilePauseSlotWidth = 56;
         this.mobileWidth =
             this.metricWidth * 2 +
@@ -52,7 +52,7 @@ export class GameInfoPanel extends Container {
     }
 
     setMobile(isMobile) {
-        // Mobile dat hai metric nam ngang de tiet kiem chieu cao.
+        // Mobile đặt hai metric nằm ngang để tiết kiệm chiều cao.
         this.panelWidth = isMobile ? this.mobileWidth : 230;
         this.panelHeight = isMobile ? this.mobileHeight : 232;
         redrawPanel(

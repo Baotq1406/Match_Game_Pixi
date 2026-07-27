@@ -4,13 +4,13 @@ import { GameInfoPanel } from "./components/GameInfoPanel.js";
 import { TargetPanel } from "./components/TargetPanel.js";
 
 /**
- * Singleton dieu phoi cac thanh phan HUD va bo cuc responsive.
+ * Singleton điều phối các thành phần HUD và bố cục responsive.
  */
 export class UIManager extends Container {
     static instance = null;
 
     static getInstance(options) {
-        // Ticker chi can truyen vao khi tao instance dau tien.
+        // Ticker chỉ cần truyền vào khi tạo instance đầu tiên.
         if (!UIManager.instance && !options?.ticker) {
             throw new Error("UIManager needs a PixiJS ticker when it is created.");
         }
@@ -32,7 +32,7 @@ export class UIManager extends Container {
     }
 
     collect(monsters) {
-        // Tra ve danh sach skill vua duoc kich hoat sau lan thu thap.
+        // Trả về danh sách skill vừa được kích hoạt sau lần thu thập.
         return this.targetPanel.collect(monsters);
     }
 

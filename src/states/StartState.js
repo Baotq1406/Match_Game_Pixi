@@ -8,7 +8,7 @@ import { MusicTrack } from "../services/AudioManager.js";
 import { GameConfig } from "../config/GameConfig.js";
 
 /**
- * Main menu hien thi nut Start va huong dan bang asset co san.
+ * Main menu hiển thị nút Start và hướng dẫn bằng asset có sẵn.
  */
 export class StartState {
     constructor(game) {
@@ -34,7 +34,7 @@ export class StartState {
         const guideButton = new ImageButton({
             normalTexture: AssetLoader.get(AssetId.BUTTON_GUIDE_NORMAL),
             hoverTexture: AssetLoader.get(AssetId.BUTTON_GUIDE_HOVER),
-            // Cat vien trong suot cua hai file de icon sach co cung kich thuoc.
+            // Cắt viền trong suốt của hai file để icon sách có cùng kích thước.
             normalFrame: { x: 557, y: 109, width: 658, height: 655 },
             hoverFrame: { x: 162, y: 148, width: 928, height: 916 },
             width: 92,
@@ -51,7 +51,7 @@ export class StartState {
         this.guideButton = guideButton;
         this.layoutControls();
         this.view.addChild(startButton);
-        // Nut guide nam tren stage de bam sat goc viewport, khong bi scale theo root vuong.
+        // Nút guide nằm trên stage để bám sát góc viewport, không bị scale theo root vuông.
         this.game.app.stage.addChild(guideButton);
         this.game.root.addChild(this.view);
     }
@@ -63,7 +63,7 @@ export class StartState {
         );
         this.backgroundAssetId = assetId;
         this.background.eventMode = "none";
-        // Background nam tren stage nen co the phu het viewport ma khong sua ti le board.
+        // Background nằm trên stage nên có thể phủ hết viewport mà không sửa tỉ lệ board.
         this.game.app.stage.addChildAt(this.background, 0);
         this.resize();
     }
@@ -75,7 +75,7 @@ export class StartState {
 
         this.layoutBackground();
         this.layoutControls();
-        // Pixi resize canvas o frame ke tiep, nen can layout lai sau khi zoom/resize.
+        // Pixi resize canvas ở frame kế tiếp, nên cần layout lại sau khi zoom/resize.
         requestAnimationFrame(() => {
             this.layoutBackground();
             this.layoutControls();
@@ -93,7 +93,7 @@ export class StartState {
             this.backgroundAssetId = assetId;
         }
 
-        // Stretch nen theo canvas de khong con vien trong o man hinh ngang hoac doc.
+        // Stretch nền theo canvas để không còn viền trống ở màn hình ngang hoặc dọc.
         this.background.position.set(0, 0);
         this.background.width = this.game.app.screen.width;
         this.background.height = this.game.app.screen.height;
@@ -104,7 +104,7 @@ export class StartState {
         const isPhonePortrait =
             width < GameConfig.mobileBreakpoint && height > width;
 
-        // Anh Android chi dung cho man hinh doc de khong bi keo ngang o landscape.
+        // Ảnh Android chỉ dùng cho màn hình dọc để không bị kéo ngang ở landscape.
         return isPhonePortrait
             ? AssetId.BACKGROUND_GAME_START_MOBILE
             : AssetId.BACKGROUND_GAME_START;
@@ -126,7 +126,7 @@ export class StartState {
             ? height - guideHeight - margin
             : margin;
 
-        // Toa do stage dung pixel viewport, nen icon luon sat goc man hinh.
+        // Tọa độ stage dùng pixel viewport, nên icon luôn sát góc màn hình.
         this.guideButton.scale.set(guideScale);
         this.guideButton.position.set(
             width - guideWidth - margin,
@@ -156,7 +156,7 @@ export class StartState {
             return;
         }
 
-        // Khoa nut de tranh double click tao hai GameplayState cung luc.
+        // Khóa nút để tránh double click tạo hai GameplayState cùng lúc.
         this.isChangingState = true;
         this.startButton.setEnabled(false);
         this.guideButton.setEnabled(false);
@@ -197,7 +197,7 @@ export class StartState {
             onPress: () => this.closeGuide(),
         });
 
-        // Chan click xuong cac nut menu khi popup dang mo.
+        // Chặn click xuống các nút menu khi popup đang mở.
         shade.eventMode = "static";
         shade.cursor = "default";
 
@@ -214,7 +214,7 @@ export class StartState {
 
         overlay.addChild(shade, panel, title, content, closeButton);
         this.guide = overlay;
-        // An nut guide tren stage de popup nhan click dung thu tu uu tien.
+        // Ẩn nút guide trên stage để popup nhận click đúng thứ tự ưu tiên.
         this.guideButton.visible = false;
         this.view.addChild(overlay);
     }

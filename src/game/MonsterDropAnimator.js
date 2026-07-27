@@ -1,7 +1,7 @@
 import { Ticker } from "pixi.js";
 
 /**
- * Dieu khien animation roi cua quai bang Pixi shared ticker.
+ * Điều khiển animation rơi của quái bằng Pixi shared ticker.
  */
 export class MonsterDropAnimator {
     constructor({ cellSize, config }) {
@@ -37,7 +37,7 @@ export class MonsterDropAnimator {
     }
 
     animate(transitions) {
-        // Moi transition co delay rieng de tao hieu ung roi lan luot.
+        // Mỗi transition có delay riêng để tạo hiệu ứng rơi lần lượt.
         if (transitions.length === 0) {
             return Promise.resolve();
         }
@@ -96,7 +96,7 @@ export class MonsterDropAnimator {
     }
 
     destroy() {
-        // Giai phong callback va resolve promise dang cho khi board bi huy.
+        // Giải phóng callback và resolve promise đang chờ khi board bị hủy.
         this.animations.forEach((animation) => {
             Ticker.shared.remove(animation.callback);
             animation.resolve();

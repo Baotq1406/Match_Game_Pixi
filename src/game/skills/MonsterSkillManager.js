@@ -10,7 +10,7 @@ import { RabbitClearSkill } from "./RabbitClearSkill.js";
 import { OwlWildcardSkill } from "./OwlWildcardSkill.js";
 
 /**
- * Dang ky, kich hoat va cap nhat cac skill theo loai quai.
+ * Đăng ký, kích hoạt và cập nhật các skill theo loại quái.
  */
 export class MonsterSkillManager {
     constructor({
@@ -25,7 +25,7 @@ export class MonsterSkillManager {
     }) {
         const skillConfig = GameConfig.monsterSkills;
 
-        // Registry giup them skill moi ma khong chen logic vao gameplay state.
+        // Registry giúp thêm skill mới mà không chèn logic vào gameplay state.
         this.skills = new Map([
             [
                 AssetId.MONSTER_CAT,
@@ -81,17 +81,17 @@ export class MonsterSkillManager {
                 }),
             ],
         ]);
-        // Owl duoc giu rieng vi no tham gia ca luat noi chuoi va tinh diem.
+        // Owl được giữ riêng vì nó tham gia cả luật nối chuỗi và tính điểm.
         this.owlSkill = this.skills.get(AssetId.MONSTER_OWL);
     }
 
     activate(monsterType, context) {
-        // Mot skill co the tra ve hieu ung phu, vi du danh sach Rabbit can xoa.
+        // Một skill có thể trả về hiệu ứng phụ, ví dụ danh sách Rabbit cần xóa.
         return this.skills.get(monsterType)?.activate(context);
     }
 
     canConnect(chain, candidate) {
-        // Binh thuong chi noi cung loai; Owl active mo them luat wildcard.
+        // Bình thường chỉ nối cùng loại; Owl active mở thêm luật wildcard.
         return (
             candidate.type === chain[0]?.type ||
             this.owlSkill.canConnect(chain, candidate)
@@ -99,7 +99,7 @@ export class MonsterSkillManager {
     }
 
     getTargetCollectibleMonsters(monsters) {
-        // Moi skill co the tu tu choi nap target ma khong sua GameplayState.
+        // Mỗi skill có thể tự từ chối nạp target mà không sửa GameplayState.
         return monsters.filter((monster) =>
             [...this.skills.values()].every(
                 (skill) => skill.canAddToTarget?.(monster.type) ?? true
@@ -108,8 +108,8 @@ export class MonsterSkillManager {
     }
 
     calculateCollectionScore(monsters) {
-        // Owl lay loai chinh cua chuoi truoc khi tra cuu multiplier.
-        // Nho vay Owl trong chuoi Sheep se nhan cung he so x2 cua Sheep.
+        // Owl lấy loại chính của chuỗi trước khi tra cứu multiplier.
+        // Nhờ vậy Owl trong chuỗi Sheep sẽ nhận cùng hệ số x2 của Sheep.
         return monsters.reduce(
             (score, monster) => {
                 const scoreType = this.owlSkill.resolveScoreType(
@@ -123,7 +123,7 @@ export class MonsterSkillManager {
     }
 
     getScoreMultiplier(monsterType) {
-        // Lay buff cao nhat thay vi nhan chong cac buff ngoai y muon.
+        // Lấy buff cao nhất thay vì nhân chồng các buff ngoài ý muốn.
         let multiplier = 1;
         this.skills.forEach((skill) => {
             multiplier = Math.max(

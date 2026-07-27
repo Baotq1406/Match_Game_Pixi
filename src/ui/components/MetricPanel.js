@@ -3,7 +3,7 @@ import { GameConfig } from "../../config/GameConfig.js";
 import { HUD_COLORS, createPanel } from "./HudStyles.js";
 
 /**
- * Thanh phan dung chung cho mot chi so co nhan va gia tri.
+ * Thành phần dùng chung cho một chỉ số có nhãn và giá trị.
  */
 export class MetricPanel extends Container {
     constructor({ label, value, valueColor, width, ticker }) {
@@ -44,7 +44,7 @@ export class MetricPanel extends Container {
     setValue(value) {
         this.pendingValue = Number(value);
 
-        // Dong ho van cap nhat gia tri that khi hieu ung cong diem dang chay.
+        // Đồng hồ vẫn cập nhật giá trị thật khi hiệu ứng cộng điểm đang chạy.
         if (!this.increaseFeedback) {
             this.valueText.text = String(this.pendingValue);
         }
@@ -63,7 +63,7 @@ export class MetricPanel extends Container {
             : null;
 
         if (activeFeedback && previousValue === activeTarget) {
-            // Gop bonus cung mot luot, vi du diem match va Rabbit clear.
+            // Gộp bonus cùng một lượt, ví dụ điểm match và Rabbit clear.
             activeFeedback.amount += amount;
             activeFeedback.elapsedMilliseconds = 0;
         } else {
@@ -125,7 +125,7 @@ export class MetricPanel extends Container {
     setUrgency(seconds) {
         this.urgencySeconds = seconds;
 
-        // Khong de canh bao thoi gian ghi de mau cua bonus dang hien thi.
+        // Không để cảnh báo thời gian ghi đè màu của bonus đang hiển thị.
         if (this.increaseFeedback) {
             return;
         }
@@ -151,7 +151,7 @@ export class MetricPanel extends Container {
         const pulse = (Math.sin(elapsedSeconds * Math.PI * frequency) + 1) / 2;
         const scaleAmount = isCritical ? 0.14 : 0.07;
 
-        // 30 giay cuoi canh bao bang mau do; 10 giay cuoi dap nhanh hon.
+        // 30 giây cuối cảnh báo bằng màu đỏ; 10 giây cuối đập nhanh hơn.
         this.labelText.style.fill = 0xff9b9b;
         this.valueText.style.fill = 0xff4f4f;
         this.valueText.scale.set(1 + pulse * scaleAmount);

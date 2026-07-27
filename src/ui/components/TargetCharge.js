@@ -1,5 +1,5 @@
 /**
- * Luu tien do cua mot target va tinh so lan skill duoc kich hoat.
+ * Lưu tiến độ của một target và tính số lần skill được kích hoạt.
  */
 export class TargetCharge {
     constructor(limit) {
@@ -8,7 +8,7 @@ export class TargetCharge {
     }
 
     add(amount, canActivate = true) {
-        // Target chua co skill se dung tai gioi han thay vi tu reset.
+        // Target chưa có skill sẽ dừng tại giới hạn thay vì tự reset.
         const total = this.value + Math.max(0, amount);
         if (!canActivate) {
             this.value = Math.min(this.limit, total);
@@ -18,7 +18,7 @@ export class TargetCharge {
             };
         }
 
-        // Phan du duoc giu lai cho chu ky nap skill tiep theo.
+        // Phần dư được giữ lại cho chu kỳ nạp skill tiếp theo.
         const activationCount = Math.floor(total / this.limit);
         this.value = total % this.limit;
 

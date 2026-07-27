@@ -1,6 +1,6 @@
 import { Graphics } from "pixi.js";
 
-// Bang mau dung chung giup cac thanh phan HUD dong nhat giao dien.
+// Bảng màu dùng chung giúp các thành phần HUD đồng nhất giao diện.
 export const HUD_COLORS = Object.freeze({
     panel: 0x241a2c,
     panelAlpha: 0.94,
@@ -11,7 +11,7 @@ export const HUD_COLORS = Object.freeze({
 });
 
 export function createPanel(width, height, radius, borderWidth) {
-    // Tao panel moi voi style mac dinh cua HUD.
+    // Tạo panel mới với style mặc định của HUD.
     return new Graphics()
         .roundRect(0, 0, width, height, radius)
         .fill({ color: HUD_COLORS.panel, alpha: HUD_COLORS.panelAlpha })
@@ -19,7 +19,7 @@ export function createPanel(width, height, radius, borderWidth) {
 }
 
 export function redrawPanel(graphics, width, height, radius, borderWidth) {
-    // Ve lai panel khi kich thuoc thay doi theo responsive.
+    // Vẽ lại panel khi kích thước thay đổi theo responsive.
     graphics
         .clear()
         .roundRect(0, 0, width, height, radius)

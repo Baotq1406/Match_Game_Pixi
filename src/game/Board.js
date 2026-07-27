@@ -20,7 +20,7 @@ const NEIGHBOR_DIRECTIONS = [
 ];
 
 /**
- * Quan ly luoi, quai, o tuong tac va qua trinh refill cua board.
+ * Quản lý lưới, quái, ô tương tác và quá trình refill của board.
  */
 export class Board extends Container {
     constructor(config = GameConfig.board) {
@@ -31,7 +31,7 @@ export class Board extends Container {
         this.cellSize = config.cellSize;
         this.cells = [];
         this.monsters = [];
-        // Hai map nay giu hieu ung cho ca quai moi duoc tao sau refill.
+        // Hai map này giữ hiệu ứng cho cả quái mới được tạo sau refill.
         this.monsterScoreMultipliers = new Map();
         this.monsterDisplayTypes = new Map();
         this.layoutWidth = this.columns * this.cellSize;
@@ -56,7 +56,7 @@ export class Board extends Container {
     }
 
     createGrid(config) {
-        // Grid layer nam duoi monster layer de giu thu tu hien thi.
+        // Grid layer nằm dưới monster layer để giữ thứ tự hiển thị.
         this.gridLayer = new Container();
         this.addChild(this.gridLayer);
 
@@ -167,7 +167,7 @@ export class Board extends Container {
     }
 
     createInitialMonsters(config) {
-        // Tao board ban dau co it nhat mot chuoi hop le de nguoi choi noi.
+        // Tạo board ban đầu có ít nhất một chuỗi hợp lệ để người chơi nối.
         const typeGrid = this.createPlayableTypeGrid(
             MONSTER_ASSET_IDS,
             config.minimumInitialChain
@@ -194,7 +194,7 @@ export class Board extends Container {
     }
 
     createMonster(type, row, column) {
-        // Quai moi phai ke thua multiplier dang hoat dong tren board.
+        // Quái mới phải kế thừa multiplier đang hoạt động trên board.
         const monster = new Monster({
             type,
             texture: AssetLoader.get(type),
@@ -215,7 +215,7 @@ export class Board extends Container {
     }
 
     setMonsterScoreMultiplier(monsterType, multiplier) {
-        // Map nay cung duoc dung cho cac quai moi sinh ra khi refill.
+        // Map này cũng được dùng cho các quái mới sinh ra khi refill.
         if (multiplier > 1) {
             this.monsterScoreMultipliers.set(monsterType, multiplier);
         } else {
@@ -236,8 +236,8 @@ export class Board extends Container {
     }
 
     setMonsterDisplayType(monsterType, displayType) {
-        // Chi doi texture; type goc van duoc giu de target va skill dem dung.
-        // Khi displayType tro ve type goc, xoa override cho cac lan refill sau.
+        // Chỉ đổi texture; type gốc vẫn được giữ để target và skill đếm đúng.
+        // Khi displayType trở về type gốc, xóa override cho các lần refill sau.
         if (displayType === monsterType) {
             this.monsterDisplayTypes.delete(monsterType);
         } else {
@@ -255,7 +255,7 @@ export class Board extends Container {
     }
 
     createPlayableTypeGrid(types, minimumChainLength) {
-        // Gioi han so lan thu de tranh vong lap vo han.
+        // Giới hạn số lần thử để tránh vòng lặp vô hạn.
         const maximumAttempts = 100;
 
         for (let attempt = 0; attempt < maximumAttempts; attempt++) {

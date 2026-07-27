@@ -1,7 +1,7 @@
 import { Container, Graphics, Text } from "pixi.js";
 
 /**
- * Badge diem nhan cho quai dang duoc huong he so diem.
+ * Badge điểm nhân cho quái đang được hưởng hệ số điểm.
  */
 export class ScoreMultiplierBadge extends Container {
     constructor(cellSize) {

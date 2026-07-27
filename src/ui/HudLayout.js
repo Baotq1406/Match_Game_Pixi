@@ -1,9 +1,9 @@
 /**
- * Sap xep HUD theo ba nhom man hinh: mobile, compact va desktop rong.
+ * Sắp xếp HUD theo ba nhóm màn hình: mobile, compact và desktop rộng.
  */
 export function layoutHud(ui, screenWidth, screenHeight, boardBounds) {
     if (screenWidth < 900) {
-        // Mobile dat thong tin o tren, target o duoi va board o giua.
+        // Mobile đặt thông tin ở trên, target ở dưới và board ở giữa.
         ui.infoPanel.setMobile(true);
         ui.targetPanel.setVertical(false);
         ui.scale.set(
@@ -58,7 +58,7 @@ export function layoutHud(ui, screenWidth, screenHeight, boardBounds) {
     ui.scale.set(Math.max(0.65, scale));
 
     if (canUseVerticalTargets) {
-        // Desktop rong dat hai panel hai ben board.
+        // Desktop rộng đặt hai panel hai bên board.
         const boardCenterY = (boardBounds.y + boardBounds.height / 2) / scale;
         ui.infoPanel.position.set(
             (boardBounds.left - sideGap) / scale - ui.infoPanel.panelWidth,
@@ -71,7 +71,7 @@ export function layoutHud(ui, screenWidth, screenHeight, boardBounds) {
         return;
     }
 
-    // Man hinh compact dat hai panel tren cung mot hang.
+    // Màn hình compact đặt hai panel trên cùng một hàng.
     const compactWidth =
         ui.infoPanel.panelWidth + 12 + ui.targetPanel.panelWidth;
     const compactX = screenWidth / ui.scale.x / 2 - compactWidth / 2;

@@ -3,13 +3,13 @@ import { Rectangle } from "pixi.js";
 const NEIGHBOR_DISTANCE = 1;
 
 /**
- * Chuyen pointer input thanh chuoi quai lien ke hop le.
+ * Chuyển pointer input thành chuỗi quái liền kề hợp lệ.
  */
 export class InputController {
     constructor(board, linkRenderer, { canConnect } = {}) {
         this.board = board;
         this.linkRenderer = linkRenderer;
-        // Neu khong co skill cung cap rule rieng, chi cho noi cung loai.
+        // Nếu không có skill cung cấp rule riêng, chỉ cho nối cùng loại.
         this.canConnect =
             canConnect ??
             ((chain, monster) => monster.type === chain[0]?.type);
@@ -32,7 +32,7 @@ export class InputController {
     }
 
     onPointerDown(event) {
-        // Khong nhan input khi board dang tao hoac refill quai.
+        // Không nhận input khi board đang tạo hoặc refill quái.
         if (
             !this.isEnabled ||
             this.board.isBusy ||
@@ -74,7 +74,7 @@ export class InputController {
     }
 
     onPointerUp() {
-        // Chuoi tu ba quai tro len moi duoc tinh la mot lan thu thap.
+        // Chuỗi từ ba quái trở lên mới được tính là một lần thu thập.
         if (!this.isEnabled || !this.isDragging) {
             return;
         }
@@ -93,7 +93,7 @@ export class InputController {
     }
 
     tryExtendChain(monster) {
-        // Quy tac loai duoc inject de skill wildcard khong lam controller phinh to.
+        // Quy tắc loại được inject để skill wildcard không làm controller phình to.
         const lastMonster = this.chain[this.chain.length - 1];
         const previousMonster = this.chain[this.chain.length - 2];
 
@@ -102,7 +102,7 @@ export class InputController {
         }
 
         if (monster === previousMonster) {
-            // Keo nguoc ve quai truoc de bo quai cuoi khoi chuoi.
+            // Kéo ngược về quái trước để bỏ quái cuối khỏi chuỗi.
             this.chain.pop();
             return;
         }
@@ -160,7 +160,7 @@ export class InputController {
             return;
         }
 
-        // Huy chuoi dang keo de sau khi resume khong thu thap nham.
+        // Hủy chuỗi đang kéo để sau khi resume không thu thập nhầm.
         const monsters = [...this.chain];
         this.linkRenderer.clear();
         this.chain = [];

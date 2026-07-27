@@ -1,5 +1,5 @@
 /**
- * Skill OWL bien Owl thanh wildcard trong mot khoang thoi gian.
+ * Skill OWL biến Owl thành wildcard trong một khoảng thời gian.
  */
 export class OwlWildcardSkill {
     constructor({
@@ -10,7 +10,7 @@ export class OwlWildcardSkill {
         setMonsterDisplayType,
         setCountdown,
     }) {
-        // monsterType la loai that cua Owl, cycleTypes chi dung de doi hinh.
+        // monsterType là loại thật của Owl, cycleTypes chỉ dùng để đổi hình.
         this.monsterType = monsterType;
         this.durationSeconds = durationSeconds;
         this.cycleIntervalMilliseconds = cycleIntervalMilliseconds;
@@ -25,7 +25,7 @@ export class OwlWildcardSkill {
     }
 
     activate() {
-        // Kich hoat lai se lam moi thoi gian va bat dau chu ky hinh tu CAT.
+        // Kích hoạt lại sẽ làm mới thời gian và bắt đầu chu kỳ hình từ CAT.
         this.remainingSeconds = this.durationSeconds;
         this.cycleElapsedMilliseconds = 0;
         this.cycleIndex = 0;
@@ -46,7 +46,7 @@ export class OwlWildcardSkill {
         );
         const displayedSecond = Math.ceil(this.remainingSeconds);
 
-        // Chi cap nhat UI khi so giay thay doi de tranh ve lai moi frame.
+        // Chỉ cập nhật UI khi số giây thay đổi để tránh vẽ lại mỗi frame.
         if (displayedSecond !== this.lastDisplayedSecond) {
             this.lastDisplayedSecond = displayedSecond;
             this.setCountdown(displayedSecond);
@@ -57,7 +57,7 @@ export class OwlWildcardSkill {
             return;
         }
 
-        // Dung while de khong bo qua buoc doi hinh khi mot frame bi cham.
+        // Dùng while để không bỏ qua bước đổi hình khi một frame bị chậm.
         this.cycleElapsedMilliseconds += deltaMilliseconds;
         while (
             this.cycleElapsedMilliseconds >=
@@ -76,8 +76,8 @@ export class OwlWildcardSkill {
             return false;
         }
 
-        // Quai dau tien khong phai Owl se quyet dinh loai chinh cua chuoi.
-        // Owl co the thay loai do, nhung khong the tron hai loai chinh khac nhau.
+        // Quái đầu tiên không phải Owl sẽ quyết định loại chính của chuỗi.
+        // Owl có thể thay loại đó, nhưng không thể trộn hai loại chính khác nhau.
         const monsters = [...chain, candidate];
         const baseType = monsters.find(
             (monster) => monster.type !== this.monsterType
@@ -92,7 +92,7 @@ export class OwlWildcardSkill {
     }
 
     canAddToTarget(monsterType) {
-        // Owl dang la wildcard thi khong duoc nap lai target cua chinh no.
+        // Owl đang là wildcard thì không được nạp lại target của chính nó.
         return !(
             this.isActive && monsterType === this.monsterType
         );
@@ -103,8 +103,8 @@ export class OwlWildcardSkill {
             return monsterType;
         }
 
-        // Khi Owl di cung Sheep, tinh Owl nhu Sheep de cung nhan buff x2.
-        // Chuoi chi co Owl thi van tinh theo loai Owl va nhan diem mac dinh.
+        // Khi Owl đi cùng Sheep, tính Owl như Sheep để cùng nhận buff x2.
+        // Chuỗi chỉ có Owl thì vẫn tính theo loại Owl và nhận điểm mặc định.
         return (
             chain.find((monster) => monster.type !== this.monsterType)
                 ?.type ?? monsterType
@@ -112,7 +112,7 @@ export class OwlWildcardSkill {
     }
 
     applyCurrentAppearance() {
-        // Callback nay chi thay texture tren board, khong thay doi type that.
+        // Callback này chỉ thay texture trên board, không thay đổi type thật.
         this.setMonsterDisplayType(
             this.monsterType,
             this.cycleTypes[this.cycleIndex]
@@ -128,7 +128,7 @@ export class OwlWildcardSkill {
             return;
         }
 
-        // Het buff phai tra texture ve Owl va an countdown tren target.
+        // Hết buff phải trả texture về Owl và ẩn countdown trên target.
         this.isActive = false;
         this.remainingSeconds = 0;
         this.setMonsterDisplayType(this.monsterType, this.monsterType);

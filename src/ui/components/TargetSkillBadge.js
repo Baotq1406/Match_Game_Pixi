@@ -1,7 +1,7 @@
 import { Container, Graphics, Text } from "pixi.js";
 
 /**
- * Hien thi feedback ngan han hoac countdown skill ben trong target.
+ * Hiển thị feedback ngắn hạn hoặc countdown skill bên trong target.
  */
 export class TargetSkillBadge extends Container {
     constructor({ ticker, cardSize }) {
@@ -33,7 +33,7 @@ export class TargetSkillBadge extends Container {
     }
 
     showTemporary(text, durationMilliseconds = 900) {
-        // Feedback CAT va PIG tu an sau mot khoang ngan.
+        // Feedback CAT và PIG tự ẩn sau một khoảng ngắn.
         this.stopHideAnimation();
         this.show(text);
 
@@ -53,7 +53,7 @@ export class TargetSkillBadge extends Container {
     }
 
     setCountdown(label, seconds) {
-        // Countdown uu tien hon feedback ngan han va duoc giu den khi ve 0.
+        // Countdown ưu tiên hơn feedback ngắn hạn và được giữ đến khi về 0.
         this.stopHideAnimation();
         if (seconds <= 0) {
             this.visible = false;

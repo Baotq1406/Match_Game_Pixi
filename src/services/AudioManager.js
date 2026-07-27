@@ -12,7 +12,7 @@ export const SoundEffect = Object.freeze({
 });
 
 /**
- * Quan ly nhac nen va xu ly gioi han autoplay cua trinh duyet.
+ * Quản lý nhạc nền và xử lý giới hạn autoplay của trình duyệt.
  */
 export class AudioManager {
     constructor({ musicVolume = 0.2, soundEffectVolume = 0.55 } = {}) {
@@ -28,7 +28,7 @@ export class AudioManager {
 
     playMusic(track) {
         if (this.currentTrack !== track) {
-            // Doi track phai dung va dua nhac cu ve dau truoc khi phat nhac moi.
+            // Đổi track phải dừng và đưa nhạc cũ về đầu trước khi phát nhạc mới.
             this.music.pause();
             this.music.currentTime = 0;
             this.music.src = track;
@@ -47,7 +47,7 @@ export class AudioManager {
             return;
         }
 
-        // Trinh duyet chi cho phep bat nhac sau thao tac cua nguoi choi.
+        // Trình duyệt chỉ cho phép bật nhạc sau thao tác của người chơi.
         this.unlockHandler = () => {
             window.removeEventListener("pointerdown", this.unlockHandler);
             window.removeEventListener("keydown", this.unlockHandler);
@@ -68,7 +68,7 @@ export class AudioManager {
     }
 
     playSoundEffect(effect) {
-        // Tao audio rieng de cac lan match lien tiep khong cat am thanh cua nhau.
+        // Tạo audio riêng để các lần match liên tiếp không cắt âm thanh của nhau.
         const sound = new Audio(effect);
         sound.volume = this.soundEffectVolume;
         this.activeEffects.add(sound);

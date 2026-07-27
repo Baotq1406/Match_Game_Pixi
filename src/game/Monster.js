@@ -2,13 +2,13 @@ import { Container, Sprite } from "pixi.js";
 import { ScoreMultiplierBadge } from "./ScoreMultiplierBadge.js";
 
 /**
- * Dai dien cho mot quai tren board va cac trang thai hien thi cua no.
+ * Đại diện cho một quái trên board và các trạng thái hiển thị của nó.
  */
 export class Monster extends Container {
     constructor({ type, texture, row, column, cellSize, sizeRatio }) {
         super();
 
-        // Cell xu ly input, hinh quai khong duoc chan vung tuong tac.
+        // Cell xử lý input, hình quái không được chặn vùng tương tác.
         this.eventMode = "none";
 
         this.type = type;
@@ -29,7 +29,7 @@ export class Monster extends Container {
     }
 
     setDisplayTexture(texture) {
-        // Owl doi qua nhieu texture co kich thuoc khac nhau nen phai scale lai.
+        // Owl đổi qua nhiều texture có kích thước khác nhau nên phải scale lại.
         this.sprite.texture = texture;
         const scale = Math.min(
             this.maximumSize / texture.width,

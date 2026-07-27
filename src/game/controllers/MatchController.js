@@ -3,7 +3,7 @@ import { MonsterSkillManager } from "../skills/MonsterSkillManager.js";
 import { SoundEffect } from "../../services/AudioManager.js";
 
 /**
- * Dieu phoi mot luot noi quai, tinh diem, nap target va kich hoat skill.
+ * Điều phối một lượt nối quái, tính điểm, nạp target và kích hoạt skill.
  */
 export class MatchController {
     constructor({
@@ -26,7 +26,7 @@ export class MatchController {
             board,
             linkRenderer,
             {
-                // Input chi hoi rule, khong can biet skill Owl con bao lau.
+                // Input chỉ hỏi rule, không cần biết skill Owl còn bao lâu.
                 canConnect: (chain, candidate) =>
                     this.skillManager.canConnect(chain, candidate),
             }
@@ -48,7 +48,7 @@ export class MatchController {
 
     createSkillManager() {
         return new MonsterSkillManager({
-            // Skill chi giao tiep voi gameplay qua cac callback nho.
+            // Skill chỉ giao tiếp với gameplay qua các callback nhỏ.
             addTime: (seconds) => this.addTime(seconds),
             addScore: (score) => this.addScore(score),
             setBoardMultiplier: (monsterType, multiplier) => {
@@ -95,10 +95,10 @@ export class MatchController {
 
         this.audioManager.playSoundEffect(SoundEffect.MATCH);
 
-        // Owl active van tinh diem, nhung Owl khong duoc nap lai target.
+        // Owl active vẫn tính điểm, nhưng Owl không được nạp lại target.
         const targetCollectibleMonsters =
             this.skillManager.getTargetCollectibleMonsters(monsters);
-        // Diem dung buff cu; skill vua nap day chi ap dung tu luot sau.
+        // Điểm dùng buff cũ; skill vừa nạp đầy chỉ áp dụng từ lượt sau.
         const activatedSkills = this.hud.collect(
             targetCollectibleMonsters
         );
@@ -107,7 +107,7 @@ export class MatchController {
             this.skillManager.calculateCollectionScore(monsters)
         );
 
-        // Context dung chung ngan cac skill trong mot luot xu ly trung quai.
+        // Context dùng chung ngăn các skill trong một lượt xử lý trùng quái.
         const activationContext = {
             claimedMonsters: new Set(),
         };
@@ -124,7 +124,7 @@ export class MatchController {
             });
         });
 
-        // Chi refill mot lan de tranh nhieu animation cung sua board.
+        // Chỉ refill một lần để tránh nhiều animation cùng sửa board.
         void this.board.resolveChain([...monstersToClear]);
     }
 

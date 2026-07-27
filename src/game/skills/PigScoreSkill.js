@@ -1,5 +1,5 @@
 /**
- * Skill PIG cong diem thuong truc tiep.
+ * Skill PIG cộng điểm thưởng trực tiếp.
  */
 export class PigScoreSkill {
     constructor({ bonusScore, addScore }) {

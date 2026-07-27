@@ -8,7 +8,7 @@ import { createPanel, HUD_COLORS, redrawPanel } from "./HudStyles.js";
 import { TargetCard } from "./TargetCard.js";
 
 /**
- * Quan ly danh sach target va phat hien target nao vua nap day skill.
+ * Quản lý danh sách target và phát hiện target nào vừa nạp đầy skill.
  */
 export class TargetPanel extends Container {
     constructor({ ticker }) {
@@ -19,7 +19,7 @@ export class TargetPanel extends Container {
         this.countGap = 22;
         this.targetLimit = GameConfig.targetMonsterCount;
         this.cards = new Map();
-        // Map nay vua luu feedback vua danh dau target da co skill hoan chinh.
+        // Map này vừa lưu feedback vừa đánh dấu target đã có skill hoàn chỉnh.
         this.skillFeedback = new Map([
             [
                 AssetId.MONSTER_CAT,
@@ -85,8 +85,8 @@ export class TargetPanel extends Container {
     }
 
     collect(monsters) {
-        // Dem theo type that, vi Owl doi hinh nhung type van la Owl.
-        // Gom theo loai de mot chuoi wildcard co the nap nhieu target.
+        // Đếm theo type thật, vì Owl đổi hình nhưng type vẫn là Owl.
+        // Gom theo loại để một chuỗi wildcard có thể nạp nhiều target.
         const collected = new Map();
         const activatedSkills = [];
 
@@ -101,7 +101,7 @@ export class TargetPanel extends Container {
                 card?.add(amount, hasImplementedSkill) ?? 0;
 
             for (let index = 0; index < activationCount; index++) {
-                // Mot lan thu thap lon co the kich hoat nhieu chu ky skill.
+                // Một lần thu thập lớn có thể kích hoạt nhiều chu kỳ skill.
                 activatedSkills.push(monsterType);
             }
 
@@ -130,7 +130,7 @@ export class TargetPanel extends Container {
     }
 
     setVertical(isVertical) {
-        // Desktop rong dung cot doc, cac kich thuoc con lai dung hang ngang.
+        // Desktop rộng dùng cột dọc, các kích thước còn lại dùng hàng ngang.
         this.panelWidth = isVertical
             ? this.verticalWidth
             : this.horizontalWidth;

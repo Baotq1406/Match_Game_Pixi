@@ -9,8 +9,8 @@ import { ResultState } from "./ResultState.js";
 import { MusicTrack, SoundEffect } from "../services/AudioManager.js";
 
 /**
- * State dieu phoi vong doi cua mot van choi.
- * Match, Pause va responsive layout duoc giao cho cac module rieng.
+ * State điều phối vòng đời của một ván chơi.
+ * Match, Pause và responsive layout được giao cho các module riêng.
  */
 export class GameplayState {
     constructor(game) {
@@ -44,7 +44,7 @@ export class GameplayState {
     }
 
     createView() {
-        // Tao board va HUD truoc de hien loading animation va layout dung.
+        // Tạo board và HUD trước để hiện loading animation và layout đúng.
         this.board = new Board();
         this.board.position.set(
             (this.game.designWidth - this.board.layoutWidth) / 2,
@@ -95,7 +95,7 @@ export class GameplayState {
         this.linkRenderer?.update(deltaMilliseconds);
         this.matchController?.update(deltaMilliseconds);
 
-        // Dong ho dung delta cua Pixi ticker de doc lap voi FPS.
+        // Đồng hồ dùng delta của Pixi ticker để độc lập với FPS.
         this.timeRemaining = Math.max(
             0,
             this.timeRemaining - deltaMilliseconds / 1000
@@ -167,7 +167,7 @@ export class GameplayState {
             return;
         }
 
-        // Controller phai huy listener truoc khi board va HUD bi destroy.
+        // Controller phải hủy listener trước khi board và HUD bị destroy.
         this.pauseController?.destroy();
         this.matchController?.destroy();
         this.game.audioManager.stopTimeWarning();

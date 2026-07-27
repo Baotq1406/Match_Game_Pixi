@@ -1,5 +1,5 @@
 /**
- * Skill SHEEP nhan doi diem Sheep trong mot khoang thoi gian.
+ * Skill SHEEP nhân đôi điểm Sheep trong một khoảng thời gian.
  */
 export class SheepMultiplierSkill {
     constructor({
@@ -20,7 +20,7 @@ export class SheepMultiplierSkill {
     }
 
     activate() {
-        // Kich hoat lai khi buff dang chay se dua countdown ve moc ban dau.
+        // Kích hoạt lại khi buff đang chạy sẽ đưa countdown về mốc ban đầu.
         this.remainingSeconds = this.durationSeconds;
         this.lastDisplayedSecond = this.durationSeconds;
         this.setCountdown(
@@ -36,7 +36,7 @@ export class SheepMultiplierSkill {
     }
 
     update(deltaMilliseconds) {
-        // Chi cap nhat UI khi so giay hien thi thay doi.
+        // Chỉ cập nhật UI khi số giây hiển thị thay đổi.
         if (!this.isActive) {
             return;
         }
@@ -68,7 +68,7 @@ export class SheepMultiplierSkill {
     }
 
     deactivate() {
-        // Tat ca badge tren board va an countdown khi het hieu luc.
+        // Tắt các badge trên board và ẩn countdown khi hết hiệu lực.
         if (!this.isActive) {
             return;
         }

@@ -1,14 +1,22 @@
 import js from "@eslint/js";
-import prettier from "eslint-plugin-prettier/recommended";
 
 export default [
   { ignores: ["dist"] },
   {
-    extends: [js.configs.recommended, prettier],
+    ...js.configs.recommended,
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
+      globals: {
+        Audio: "readonly",
+        clearTimeout: "readonly",
+        console: "readonly",
+        document: "readonly",
+        requestAnimationFrame: "readonly",
+        setTimeout: "readonly",
+        window: "readonly",
+      },
     },
     rules: {},
   },

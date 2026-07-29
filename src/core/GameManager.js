@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { GameConfig } from "../config/GameConfig.js";
 import { StartState } from "../states/StartState.js";
-import { AssetLoader } from "../services/AssetLoader.js";
+import { AssetBundle, AssetLoader } from "../services/AssetLoader.js";
 import { AudioManager } from "../services/AudioManager.js";
 import { StateMachine } from "./StateMachine.js";
 
@@ -41,10 +41,10 @@ export class GameManager {
         GameManager.instance = this;
     }
 
-    async start() {
+    async start(onProgress) {
         // Tải tài nguyên trước khi hiển thị main menu.
         this.resize();
-        await AssetLoader.load();
+        await AssetLoader.load(AssetBundle.START, onProgress);
         await this.stateMachine.changeState(StartState);
     }
 

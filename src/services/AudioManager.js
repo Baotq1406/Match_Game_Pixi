@@ -1,11 +1,11 @@
 export const MusicTrack = Object.freeze({
-    GAME: "/sounds/Background music/Background_music.wav",
+    GAME: "/sounds/Background music/Background_music.mp3",
     RESULT: "/sounds/Background music/Background_music_for_game_over.mp3",
 });
 
 export const SoundEffect = Object.freeze({
-    MATCH: "/sounds/Sound effect/Match_sound.wav",
-    MATCH_FAIL: "/sounds/Sound effect/Match_Fail_sound.wav",
+    MATCH: "/sounds/Sound effect/Match_sound.mp3",
+    MATCH_FAIL: "/sounds/Sound effect/Match_Fail_sound.mp3",
     TIME_WARNING:
         "/sounds/Sound effect/Time_passing_sound_effect_fast_clock.mp3",
     GAME_OVER: "/sounds/Sound effect/Sound_game_over.mp3",

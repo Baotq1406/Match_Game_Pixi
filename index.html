@@ -9,6 +9,24 @@
 </head>
 
 <body>
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite">
+        <div class="loading-card">
+            <img class="loading-logo" src="/assets/logo.svg" alt="" />
+            <h1 class="loading-title">MONSTER MATCH</h1>
+            <p id="loading-message" class="loading-message">Đang khởi động game...</p>
+            <div
+                class="loading-progress"
+                role="progressbar"
+                aria-label="Tiến trình tải game"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+            >
+                <div id="loading-progress-bar" class="loading-progress-bar"></div>
+            </div>
+            <span id="loading-percentage" class="loading-percentage">0%</span>
+        </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
 </body>
 </html>

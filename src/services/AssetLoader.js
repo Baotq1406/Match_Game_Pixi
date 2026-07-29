@@ -24,6 +24,12 @@ export const AssetId = Object.freeze({
     MONSTER_OWL: "monster-owl",
 });
 
+export const AssetBundle = Object.freeze({
+    START: "start",
+    GAMEPLAY: "gameplay",
+    RESULT: "result",
+});
+
 export const MONSTER_ASSET_IDS = Object.freeze([
     AssetId.MONSTER_CAT,
     AssetId.MONSTER_PIG,
@@ -62,114 +68,166 @@ function createTargetAnimationAssets() {
                         monsterType,
                         frameNumber
                     ),
-                    src: `/assets/MonsterNormalized/${source.folder}/${source.frameName}_${frameNumber}.png`,
+                    src: `/assets/MonsterNormalized/${source.folder}/${source.frameName}_${frameNumber}.webp`,
                 };
             }
         );
     });
 }
 
-const GAME_ASSETS = [
-    {
-        alias: AssetId.BASKET,
-        src: "/assets/Basket.png",
-    },
+const START_ASSETS = [
     {
         alias: AssetId.BACKGROUND_GAME_START,
-        src: "/assets/Background/Background_Game_Start.png",
+        src: "/assets/Background/Background_Game_Start.webp",
     },
     {
         alias: AssetId.BACKGROUND_GAME_START_MOBILE,
-        src: "/assets/Background/Background_For_Mobile_Game_Start.png",
-    },
-    {
-        alias: AssetId.BACKGROUND_GAME_OVER,
-        src: "/assets/Background/Background_game_over.png",
-    },
-    {
-        alias: AssetId.BACKGROUND_GAME_OVER_MOBILE,
-        src: "/assets/Background/Background_game_over_for_mobile.png",
-    },
-    {
-        alias: AssetId.POPUP_GAME_OVER,
-        src: "/assets/Pop_up/Pop_up_game_over.png",
+        src: "/assets/Background/Background_For_Mobile_Game_Start.webp",
     },
     {
         alias: AssetId.BUTTON_START_NORMAL,
-        src: "/assets/Button/Button_start_normal.png",
+        src: "/assets/Button/Button_start_normal.webp",
     },
     {
         alias: AssetId.BUTTON_START_HOVER,
-        src: "/assets/Button/Button_start_hover.png",
+        src: "/assets/Button/Button_start_hover.webp",
     },
     {
         alias: AssetId.BUTTON_GUIDE_NORMAL,
-        src: "/assets/Button/Button_guide_normal.png",
+        src: "/assets/Button/Button_guide_normal.webp",
     },
     {
         alias: AssetId.BUTTON_GUIDE_HOVER,
-        src: "/assets/Button/Button_guide_hover.png",
+        src: "/assets/Button/Button_guide_hover.webp",
     },
+];
+
+const GAMEPLAY_ASSETS = [
     {
-        alias: AssetId.BUTTON_HOME_NORMAL,
-        src: "/assets/Button/button_home_normal.png",
-    },
-    {
-        alias: AssetId.BUTTON_HOME_HOVER,
-        src: "/assets/Button/button_home_hover.png",
-    },
-    {
-        alias: AssetId.BUTTON_RETRY_NORMAL,
-        src: "/assets/Button/button_retry_normal.png",
-    },
-    {
-        alias: AssetId.BUTTON_RETRY_HOVER,
-        src: "/assets/Button/button_retry_hover.png",
+        alias: AssetId.BASKET,
+        src: "/assets/Basket.webp",
     },
     {
         alias: AssetId.BUTTON_PAUSE_NORMAL,
-        src: "/assets/Button/Button_pause_normal.png",
+        src: "/assets/Button/Button_pause_normal.webp",
     },
     {
         alias: AssetId.BUTTON_PAUSE_HOVER,
-        src: "/assets/Button/Button_pause_hover.png",
+        src: "/assets/Button/Button_pause_hover.webp",
     },
     {
         alias: AssetId.MONSTER_CAT,
-        src: "/assets/MonsterNormalized/Cam/Cat_1.png",
+        src: "/assets/MonsterNormalized/Cam/Cat_1.webp",
     },
     {
         alias: AssetId.MONSTER_PIG,
-        src: "/assets/MonsterNormalized/Hong/Pig_1.png",
+        src: "/assets/MonsterNormalized/Hong/Pig_1.webp",
     },
     {
         alias: AssetId.MONSTER_SHEEP,
-        src: "/assets/MonsterNormalized/Tim/Sheep_1.png",
+        src: "/assets/MonsterNormalized/Tim/Sheep_1.webp",
     },
     {
         alias: AssetId.MONSTER_RABBIT,
-        src: "/assets/MonsterNormalized/Trang/Rabbit_1.png",
+        src: "/assets/MonsterNormalized/Trang/Rabbit_1.webp",
     },
     {
         alias: AssetId.MONSTER_OWL,
-        src: "/assets/MonsterNormalized/Xanh_la/Owl_1.png",
+        src: "/assets/MonsterNormalized/Xanh_la/Owl_1.webp",
     },
     ...createTargetAnimationAssets(),
 ];
+
+const RESULT_ASSETS = [
+    {
+        alias: AssetId.BACKGROUND_GAME_OVER,
+        src: "/assets/Background/Background_game_over.webp",
+    },
+    {
+        alias: AssetId.BACKGROUND_GAME_OVER_MOBILE,
+        src: "/assets/Background/Background_game_over_for_mobile.webp",
+    },
+    {
+        alias: AssetId.POPUP_GAME_OVER,
+        src: "/assets/Pop_up/Pop_up_game_over.webp",
+    },
+    {
+        alias: AssetId.BUTTON_HOME_NORMAL,
+        src: "/assets/Button/button_home_normal.webp",
+    },
+    {
+        alias: AssetId.BUTTON_HOME_HOVER,
+        src: "/assets/Button/button_home_hover.webp",
+    },
+    {
+        alias: AssetId.BUTTON_RETRY_NORMAL,
+        src: "/assets/Button/button_retry_normal.webp",
+    },
+    {
+        alias: AssetId.BUTTON_RETRY_HOVER,
+        src: "/assets/Button/button_retry_hover.webp",
+    },
+];
+
+const ASSET_BUNDLES = Object.freeze({
+    [AssetBundle.START]: START_ASSETS,
+    [AssetBundle.GAMEPLAY]: GAMEPLAY_ASSETS,
+    [AssetBundle.RESULT]: RESULT_ASSETS,
+});
 
 /**
  * Tải asset một lần và cung cấp texture theo alias.
  */
 export class AssetLoader {
-    static loadPromise = null;
+    static loadPromises = new Map();
+    static bundleProgress = new Map();
+    static progressListeners = new Map();
 
-    static load() {
-        // Dùng chung promise để tránh tải trùng asset khi gọi nhiều lần.
-        if (!this.loadPromise) {
-            this.loadPromise = Assets.load(GAME_ASSETS);
+    static load(bundle = AssetBundle.START, onProgress) {
+        const assets = ASSET_BUNDLES[bundle];
+
+        if (!assets) {
+            return Promise.reject(new Error(`Unknown asset bundle: ${bundle}`));
         }
 
-        return this.loadPromise;
+        if (onProgress) {
+            const listeners = this.progressListeners.get(bundle) ?? new Set();
+            listeners.add(onProgress);
+            this.progressListeners.set(bundle, listeners);
+            onProgress(this.bundleProgress.get(bundle) ?? 0);
+        }
+        // Dùng chung promise để tránh tải trùng asset khi gọi nhiều lần.
+        if (!this.loadPromises.has(bundle)) {
+            const loadPromise = Assets.load(assets, (progress) => {
+                this.updateBundleProgress(bundle, progress);
+            }).then((loadedAssets) => {
+                this.updateBundleProgress(bundle, 1);
+                return loadedAssets;
+            }).catch((error) => {
+                // Cho phép thử tải lại nếu mạng chập chờn ở lần đầu.
+                this.loadPromises.delete(bundle);
+                this.updateBundleProgress(bundle, 0);
+                throw error;
+            });
+
+            this.loadPromises.set(bundle, loadPromise);
+        }
+
+        const loadPromise = this.loadPromises.get(bundle);
+        return loadPromise.finally(() => {
+            this.progressListeners.get(bundle)?.delete(onProgress);
+        });
+    }
+
+    static updateBundleProgress(bundle, progress) {
+        this.bundleProgress.set(bundle, progress);
+        this.progressListeners.get(bundle)?.forEach((listener) => {
+            listener(progress);
+        });
+    }
+
+    static isLoaded(bundle) {
+        return this.bundleProgress.get(bundle) === 1;
     }
 
     static get(assetId) {

@@ -3,9 +3,18 @@ import { GameplayState } from "./GameplayState.js";
 import { ImageButton } from "../ui/components/ImageButton.js";
 import { MenuButton } from "../ui/components/MenuButton.js";
 import { HUD_COLORS, createPanel } from "../ui/components/HudStyles.js";
-import { AssetId, AssetLoader } from "../services/AssetLoader.js";
+import {
+    AssetBundle,
+    AssetId,
+    AssetLoader,
+} from "../services/AssetLoader.js";
 import { MusicTrack } from "../services/AudioManager.js";
 import { GameConfig } from "../config/GameConfig.js";
+import { LoadingScreen } from "../ui/LoadingScreen.js";
+
+function waitForNextFrame() {
+    return new Promise((resolve) => requestAnimationFrame(resolve));
+}
 
 /**
  * Main menu hiển thị nút Start và hướng dẫn bằng asset có sẵn.
@@ -54,6 +63,11 @@ export class StartState {
         // Nút guide nằm trên stage để bám sát góc viewport, không bị scale theo root vuông.
         this.game.app.stage.addChild(guideButton);
         this.game.root.addChild(this.view);
+
+        // Menu đã dùng được; tranh thủ tải gameplay trong lúc người chơi chuẩn bị.
+        void AssetLoader.load(AssetBundle.GAMEPLAY).catch((error) => {
+            console.error("Không thể tải trước tài nguyên gameplay:", error);
+        });
     }
 
     createBackground() {
@@ -160,7 +174,34 @@ export class StartState {
         this.isChangingState = true;
         this.startButton.setEnabled(false);
         this.guideButton.setEnabled(false);
-        await this.game.stateMachine.changeState(GameplayState);
+
+        const needsLoading = !AssetLoader.isLoaded(AssetBundle.GAMEPLAY);
+        if (needsLoading) {
+            LoadingScreen.show("Đang chuẩn bị ván chơi...");
+        }
+
+        try {
+            await AssetLoader.load(AssetBundle.GAMEPLAY, (progress) => {
+                if (needsLoading) {
+                    LoadingScreen.update(
+                        progress,
+                        "Đang chuẩn bị ván chơi..."
+                    );
+                }
+            });
+            await this.game.stateMachine.changeState(GameplayState);
+            await waitForNextFrame();
+
+            if (needsLoading) {
+                LoadingScreen.hide();
+            }
+        } catch (error) {
+            console.error("Không thể bắt đầu gameplay:", error);
+            this.isChangingState = false;
+            this.startButton.setEnabled(true);
+            this.guideButton.setEnabled(true);
+            LoadingScreen.showError();
+        }
     }
 
     showGuide() {

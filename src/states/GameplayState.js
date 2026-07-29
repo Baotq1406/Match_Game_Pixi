@@ -7,6 +7,12 @@ import { UIManager } from "../ui/UIManager.js";
 import { GameConfig } from "../config/GameConfig.js";
 import { ResultState } from "./ResultState.js";
 import { MusicTrack, SoundEffect } from "../services/AudioManager.js";
+import { AssetBundle, AssetLoader } from "../services/AssetLoader.js";
+import { LoadingScreen } from "../ui/LoadingScreen.js";
+
+function waitForNextFrame() {
+    return new Promise((resolve) => requestAnimationFrame(resolve));
+}
 
 /**
  * State điều phối vòng đời của một ván chơi.
@@ -41,6 +47,11 @@ export class GameplayState {
         if (document.hidden) {
             this.pauseController.pause();
         }
+
+        // Result chỉ cần sau khi hết ván; tải ngầm trong lúc người chơi đang chơi.
+        void AssetLoader.load(AssetBundle.RESULT).catch((error) => {
+            console.error("Không thể tải trước tài nguyên kết quả:", error);
+        });
     }
 
     createView() {
@@ -104,7 +115,7 @@ export class GameplayState {
         this.updateTimeWarningSound();
 
         if (this.timeRemaining === 0) {
-            this.finishGame();
+            void this.finishGame();
         }
     }
 
@@ -120,14 +131,35 @@ export class GameplayState {
         this.updateTimeWarningSound();
     }
 
-    finishGame() {
+    async finishGame() {
         this.isGameOver = true;
         this.isRunning = false;
         this.game.audioManager.stopTimeWarning();
         this.game.audioManager.playSoundEffect(SoundEffect.GAME_OVER);
-        void this.game.stateMachine.changeState(ResultState, {
-            score: this.matchController.score,
-        });
+
+        const needsLoading = !AssetLoader.isLoaded(AssetBundle.RESULT);
+        if (needsLoading) {
+            LoadingScreen.show("Đang tổng kết điểm...");
+        }
+
+        try {
+            await AssetLoader.load(AssetBundle.RESULT, (progress) => {
+                if (needsLoading) {
+                    LoadingScreen.update(progress, "Đang tổng kết điểm...");
+                }
+            });
+            await this.game.stateMachine.changeState(ResultState, {
+                score: this.matchController.score,
+            });
+            await waitForNextFrame();
+
+            if (needsLoading) {
+                LoadingScreen.hide();
+            }
+        } catch (error) {
+            console.error("Không thể mở màn hình kết quả:", error);
+            LoadingScreen.showError();
+        }
     }
 
     resize() {

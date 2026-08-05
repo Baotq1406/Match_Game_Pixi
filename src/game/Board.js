@@ -254,6 +254,44 @@ export class Board extends Container {
         return this.refillService.resolveChain(chain);
     }
 
+    ensurePlayableBoard(
+        minimumChainLength = this.config.minimumInitialChain
+    ) {
+        const currentTypeGrid = this.monsters.map((row) =>
+            row.map((monster) => monster.type)
+        );
+
+        if (this.hasAvailableChain(currentTypeGrid, minimumChainLength)) {
+            return false;
+        }
+
+        // Giữ các Monster instance để không làm mất state hiển thị đang gắn
+        // với ô, nhưng xáo lại type thành một board chắc chắn có nước đi.
+        const playableTypeGrid = this.createPlayableTypeGrid(
+            MONSTER_ASSET_IDS,
+            minimumChainLength
+        );
+
+        for (let row = 0; row < this.rows; row++) {
+            for (let column = 0; column < this.columns; column++) {
+                const monster = this.monsters[row][column];
+                const type = playableTypeGrid[row][column];
+                const displayType = this.monsterDisplayTypes.get(type);
+
+                monster.type = type;
+                monster.setScoreMultiplier(
+                    this.monsterScoreMultipliers.get(type) ?? 1
+                );
+                monster.setDisplayTexture(
+                    AssetLoader.get(displayType ?? type)
+                );
+            }
+        }
+
+        this.emit("boardShuffled");
+        return true;
+    }
+
     createPlayableTypeGrid(types, minimumChainLength) {
         // Giới hạn số lần thử để tránh vòng lặp vô hạn.
         const maximumAttempts = 100;

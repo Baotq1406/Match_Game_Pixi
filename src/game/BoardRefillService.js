@@ -95,6 +95,11 @@ export class BoardRefillService {
         });
 
         await this.animator.animate(transitions);
+        // Refill ngẫu nhiên có thể tạo board không còn chuỗi hợp lệ.
+        // Xáo lại trước khi mở khóa input để người chơi luôn có nước đi.
+        this.board.ensurePlayableBoard(
+            this.config.minimumInitialChain
+        );
         this.board.isBusy = false;
         this.board.emit("boardRefilled");
     }
